@@ -8,185 +8,119 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-
-/* ── THEMES ── */
-:root{
-  --font:'DM Sans',system-ui,sans-serif;--mono:'DM Mono',monospace;
-  --radius:12px;--radius-sm:8px;
-  --transition:all .18s ease;
-}
-[data-theme="dark"]{
-  --bg:#0f1117;--bg2:#161920;--bg3:#1e2130;--bg4:#252840;
-  --border:#2a2d3e;--border2:#3a3d50;
-  --text:#e8eaf0;--text2:#9aa0b8;--text3:#5c6080;
-  --green:#3ecf8e;--greenbg:rgba(62,207,142,0.12);
-  --amber:#f0b93e;--amberbg:rgba(240,185,62,0.12);
-  --red:#f05b5b;--redbg:rgba(240,91,91,0.12);
-  --shadow:rgba(0,0,0,0.4);
-}
-[data-theme="light"]{
-  --bg:#f5f6fa;--bg2:#ffffff;--bg3:#eef0f6;--bg4:#e4e7f0;
-  --border:#dde0ec;--border2:#c8ccdd;
-  --text:#1a1d2e;--text2:#5a6080;--text3:#9aa0b8;
-  --green:#1a9e5f;--greenbg:rgba(26,158,95,0.1);
-  --amber:#c47a0a;--amberbg:rgba(196,122,10,0.1);
-  --red:#c0392b;--redbg:rgba(192,57,43,0.1);
-  --shadow:rgba(0,0,0,0.08);
-}
-
-/* ── ACCENTS ── */
-[data-accent="blue"]  { --accent:#5b8af0;--accent2:#3d6ee0;--accentbg:rgba(91,138,240,0.12); }
-[data-accent="green"] { --accent:#3ecf8e;--accent2:#2aab74;--accentbg:rgba(62,207,142,0.12); }
-[data-accent="purple"]{ --accent:#a07ef0;--accent2:#8060d8;--accentbg:rgba(160,126,240,0.12); }
-[data-accent="teal"]  { --accent:#3ecfd8;--accent2:#28adb5;--accentbg:rgba(62,207,216,0.12); }
-[data-accent="orange"]{ --accent:#f0833e;--accent2:#d46828;--accentbg:rgba(240,131,62,0.12); }
-
-/* ── FONT SIZE ── */
-[data-font-size="compact"] { font-size:13px; }
-[data-font-size="normal"]  { font-size:14px; }
-[data-font-size="large"]   { font-size:16px; }
-
-/* ── DENSITY ── */
-[data-density="compact"] .hero { padding:32px 28px 24px; }
-[data-density="compact"] .modules { gap:10px; }
-[data-density="compact"] .module-card { padding:18px; }
-[data-density="spacious"] .hero { padding:72px 28px 56px; }
-[data-density="spacious"] .modules { gap:22px; }
-[data-density="spacious"] .module-card { padding:32px; }
-
+:root{--font:'DM Sans',system-ui,sans-serif;--mono:'DM Mono',monospace;--radius:12px;--radius-sm:8px;--transition:all .18s ease}
+[data-theme="dark"]{--bg:#0f1117;--bg2:#161920;--bg3:#1e2130;--bg4:#252840;--border:#2a2d3e;--border2:#3a3d50;--text:#e8eaf0;--text2:#9aa0b8;--text3:#5c6080;--green:#3ecf8e;--greenbg:rgba(62,207,142,0.12);--amber:#f0b93e;--amberbg:rgba(240,185,62,0.12);--red:#f05b5b;--redbg:rgba(240,91,91,0.12);--shadow:rgba(0,0,0,0.4)}
+[data-theme="light"]{--bg:#f5f6fa;--bg2:#ffffff;--bg3:#eef0f6;--bg4:#e4e7f0;--border:#dde0ec;--border2:#c8ccdd;--text:#1a1d2e;--text2:#5a6080;--text3:#9aa0b8;--green:#1a9e5f;--greenbg:rgba(26,158,95,0.1);--amber:#c47a0a;--amberbg:rgba(196,122,10,0.1);--red:#c0392b;--redbg:rgba(192,57,43,0.1);--shadow:rgba(0,0,0,0.08)}
+[data-accent="blue"]{--accent:#5b8af0;--accent2:#3d6ee0;--accentbg:rgba(91,138,240,0.12)}
+[data-accent="green"]{--accent:#3ecf8e;--accent2:#2aab74;--accentbg:rgba(62,207,142,0.12)}
+[data-accent="purple"]{--accent:#a07ef0;--accent2:#8060d8;--accentbg:rgba(160,126,240,0.12)}
+[data-accent="teal"]{--accent:#3ecfd8;--accent2:#28adb5;--accentbg:rgba(62,207,216,0.12)}
+[data-accent="orange"]{--accent:#f0833e;--accent2:#d46828;--accentbg:rgba(240,131,62,0.12)}
+[data-font-size="compact"]{font-size:13px}[data-font-size="normal"]{font-size:14px}[data-font-size="large"]{font-size:16px}
+[data-density="compact"] .hero{padding:28px 28px 20px}[data-density="compact"] .modules{gap:10px}[data-density="compact"] .module-card{padding:18px}
+[data-density="spacious"] .hero{padding:68px 28px 52px}[data-density="spacious"] .modules{gap:22px}[data-density="spacious"] .module-card{padding:32px}
 body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;transition:background .25s,color .25s}
 
-/* ── TOPNAV ── */
-.topnav{background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 24px;height:54px;gap:12px;position:sticky;top:0;z-index:50;transition:background .25s}
+.topnav{background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 24px;height:54px;gap:10px;position:sticky;top:0;z-index:50;transition:background .25s}
 .logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text)}
-.logo-icon{width:32px;height:32px;background:var(--accent);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;color:#fff;transition:background .25s}
+.logo-icon{width:32px;height:32px;background:var(--accent);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;color:#fff;transition:background .25s;flex-shrink:0}
 .logo-name{font-size:16px;font-weight:600;letter-spacing:-.3px}
 .logo-sub{font-size:10px;color:var(--text3);font-family:var(--mono);margin-top:1px}
 .nav-spacer{flex:1}
 .nav-right{display:flex;align-items:center;gap:8px}
 .od-dot{width:7px;height:7px;border-radius:50%;background:var(--text3);transition:background .3s;flex-shrink:0}
-.od-dot.ok{background:var(--green)}
+.od-dot.ok{background:var(--green)}.od-dot.err{background:var(--red)}.od-dot.syncing{background:var(--amber)}
 .nav-sync-label{font-size:12px;color:var(--text3)}
-.nav-btn{padding:7px 13px;border-radius:var(--radius-sm);font-family:var(--font);font-size:13px;font-weight:500;cursor:pointer;border:none;display:inline-flex;align-items:center;gap:6px;transition:var(--transition)}
-.nav-btn i{font-size:15px}
-.nav-btn-ghost{background:none;border:1px solid var(--border2);color:var(--text2)}
-.nav-btn-ghost:hover{border-color:var(--accent);color:var(--accent);background:var(--accentbg)}
-.nav-btn-primary{background:var(--accent);color:#fff}
-.nav-btn-primary:hover{background:var(--accent2)}
-.nav-btn-icon{padding:7px;border-radius:var(--radius-sm);background:none;border:1px solid var(--border2);color:var(--text2);cursor:pointer;font-size:17px;display:flex;align-items:center;justify-content:center;transition:var(--transition)}
-.nav-btn-icon:hover{border-color:var(--accent);color:var(--accent);background:var(--accentbg)}
+.nbtn{padding:7px 13px;border-radius:var(--radius-sm);font-family:var(--font);font-size:13px;font-weight:500;cursor:pointer;border:none;display:inline-flex;align-items:center;gap:6px;transition:var(--transition)}
+.nbtn i{font-size:15px}
+.nbtn-ghost{background:none;border:1px solid var(--border2);color:var(--text2)}.nbtn-ghost:hover{border-color:var(--accent);color:var(--accent);background:var(--accentbg)}
+.nbtn-primary{background:var(--accent);color:#fff}.nbtn-primary:hover{background:var(--accent2)}
+.nbtn-icon{padding:7px;border-radius:var(--radius-sm);background:none;border:1px solid var(--border2);color:var(--text2);cursor:pointer;font-size:17px;display:flex;align-items:center;transition:var(--transition)}.nbtn-icon:hover{border-color:var(--accent);color:var(--accent);background:var(--accentbg)}
 
-/* ── HERO ── */
-.hero{padding:52px 28px 38px;text-align:center;transition:padding .2s}
-.hero-greeting{font-size:12px;color:var(--text3);font-family:var(--mono);margin-bottom:10px;letter-spacing:.05em;text-transform:uppercase}
-.hero-title{font-size:40px;font-weight:600;letter-spacing:-1.5px;margin-bottom:10px;line-height:1.1}
+/* SYNC BAR */
+.sync-bar{background:var(--bg2);border-bottom:1px solid var(--border);padding:8px 24px;display:flex;align-items:center;gap:10px;font-size:12.5px;transition:background .25s}
+.sync-bar-status{display:flex;align-items:center;gap:7px;flex:1}
+.sync-bar-actions{display:flex;gap:8px}
+.sbtn{padding:5px 12px;border-radius:var(--radius-sm);font-family:var(--font);font-size:12px;font-weight:500;cursor:pointer;border:none;display:inline-flex;align-items:center;gap:5px;transition:var(--transition)}
+.sbtn i{font-size:13px}
+.sbtn-primary{background:var(--accent);color:#fff}.sbtn-primary:hover{background:var(--accent2)}
+.sbtn-ghost{background:none;border:1px solid var(--border2);color:var(--text2)}.sbtn-ghost:hover{border-color:var(--accent);color:var(--accent);background:var(--accentbg)}
+.sbtn-success{background:var(--greenbg);color:var(--green);border:1px solid transparent}.sbtn-success:hover{background:var(--green);color:#fff}
+.sbtn-warn{background:var(--amberbg);color:var(--amber);border:1px solid transparent}
+.sync-time{font-size:11px;color:var(--text3);font-family:var(--mono)}
+
+.hero{padding:48px 28px 36px;text-align:center;transition:padding .2s}
+.hero-greeting{font-size:11.5px;color:var(--text3);font-family:var(--mono);margin-bottom:10px;letter-spacing:.05em;text-transform:uppercase}
+.hero-title{font-size:38px;font-weight:600;letter-spacing:-1.5px;margin-bottom:10px;line-height:1.1}
 .hero-title span{color:var(--accent);transition:color .25s}
-.hero-sub{font-size:14px;color:var(--text2);max-width:460px;margin:0 auto;line-height:1.65}
+.hero-sub{font-size:14px;color:var(--text2);max-width:440px;margin:0 auto;line-height:1.65}
 
-/* ── OD BANNER ── */
-.od-banner{max-width:1100px;margin:28px auto 0;padding:13px 18px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);display:flex;align-items:center;gap:12px;font-size:13px;transition:var(--transition)}
-.od-banner.connected{border-color:rgba(62,207,142,0.3);background:var(--greenbg)}
-
-/* ── STATS ── */
-.statsbar{max-width:1100px;margin:20px auto 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+.statsbar{max-width:1100px;margin:20px auto 0;padding:0 28px;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
 .sbar-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:16px;transition:background .25s,border .25s}
 .sbar-label{font-size:10.5px;color:var(--text3);text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px}
 .sbar-val{font-size:22px;font-weight:600;font-family:var(--mono);letter-spacing:-1px}
 .sbar-sub{font-size:11px;color:var(--text3);margin-top:3px}
 
-/* ── MODULES ── */
-.modules{max-width:1100px;margin:24px auto 0;padding:0 28px 48px;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;transition:gap .2s}
+.modules{max-width:1100px;margin:22px auto 0;padding:0 28px 48px;display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:16px;transition:gap .2s}
 .module-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:24px;text-decoration:none;color:var(--text);transition:var(--transition);cursor:pointer;position:relative;overflow:hidden;display:block}
 .module-card:hover{border-color:var(--border2);transform:translateY(-2px);box-shadow:0 8px 24px var(--shadow)}
 .module-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:var(--radius) var(--radius) 0 0;transition:background .25s}
-.module-card.finflow::before{background:var(--green)}
-.module-card.backupmgr::before{background:var(--accent)}
-.module-card.coming::before{background:var(--border)}
+.module-card.finflow::before{background:var(--green)}.module-card.backupmgr::before{background:var(--accent)}.module-card.coming::before{background:var(--border)}
 .module-icon{width:46px;height:46px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:23px;margin-bottom:14px;transition:background .25s}
-.module-card.finflow .module-icon{background:var(--greenbg);color:var(--green)}
-.module-card.backupmgr .module-icon{background:var(--accentbg);color:var(--accent)}
-.module-card.coming .module-icon{background:var(--bg3);color:var(--text3)}
-.module-name{font-size:17px;font-weight:600;margin-bottom:6px}
-.module-desc{font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:16px}
+.module-card.finflow .module-icon{background:var(--greenbg);color:var(--green)}.module-card.backupmgr .module-icon{background:var(--accentbg);color:var(--accent)}.module-card.coming .module-icon{background:var(--bg3);color:var(--text3)}
+.module-name{font-size:17px;font-weight:600;margin-bottom:6px}.module-desc{font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:16px}
 .module-tags{display:flex;gap:6px;flex-wrap:wrap}
 .tag{font-size:10.5px;padding:3px 8px;border-radius:20px;font-family:var(--mono);font-weight:500}
-.tag-green{background:var(--greenbg);color:var(--green)}
-.tag-blue{background:var(--accentbg);color:var(--accent)}
-.tag-gray{background:var(--bg3);color:var(--text3)}
-.tag-amber{background:var(--amberbg);color:var(--amber)}
+.tag-green{background:var(--greenbg);color:var(--green)}.tag-blue{background:var(--accentbg);color:var(--accent)}.tag-gray{background:var(--bg3);color:var(--text3)}
 .module-arrow{position:absolute;top:20px;right:20px;font-size:20px;color:var(--text3);transition:var(--transition)}
 .module-card:hover .module-arrow{color:var(--accent);transform:translateX(3px)}
 .coming-badge{position:absolute;top:18px;right:18px;font-size:10px;background:var(--bg3);color:var(--text3);padding:3px 8px;border-radius:20px;font-family:var(--mono);border:1px solid var(--border)}
 
-/* ── ACTIVITY ── */
 .activity-wrap{max-width:1100px;margin:0 auto 48px;padding:0 28px}
 .section-title{font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.7px;margin-bottom:12px}
 .activity-list{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:background .25s}
 .act-item{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border);font-size:13px}
 .act-item:last-child{border-bottom:none}
 .act-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
-.act-icon.fin{background:var(--greenbg);color:var(--green)}
-.act-icon.bkp{background:var(--accentbg);color:var(--accent)}
-.act-msg{flex:1;color:var(--text2)}
-.act-msg strong{color:var(--text);font-weight:500}
+.act-icon.fin{background:var(--greenbg);color:var(--green)}.act-icon.bkp{background:var(--accentbg);color:var(--accent)}
+.act-msg{flex:1;color:var(--text2)}.act-msg strong{color:var(--text);font-weight:500}
 .act-time{font-size:11px;color:var(--text3);font-family:var(--mono)}
 
-/* ── FOOTER ── */
-footer{border-top:1px solid var(--border);padding:18px 28px;display:flex;align-items:center;justify-content:space-between;font-size:12px;color:var(--text3);max-width:100%}
-footer a{color:var(--text3);text-decoration:none}
-footer a:hover{color:var(--accent)}
+footer{border-top:1px solid var(--border);padding:18px 28px;display:flex;align-items:center;justify-content:space-between;font-size:12px;color:var(--text3)}
+footer a{color:var(--text3);text-decoration:none}.footer a:hover{color:var(--accent)}
 
-/* ── SETTINGS PANEL ── */
+/* SETTINGS PANEL */
 .panel-overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:200;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s;backdrop-filter:blur(6px)}
 .panel-overlay.open{opacity:1;pointer-events:all}
-.panel{background:var(--bg2);border:1px solid var(--border2);border-radius:16px;padding:0;width:100%;max-width:520px;max-height:90vh;overflow-y:auto;transform:translateY(10px);transition:transform .2s,background .25s}
+.panel{background:var(--bg2);border:1px solid var(--border2);border-radius:16px;padding:0;width:100%;max-width:500px;max-height:90vh;overflow-y:auto;transform:translateY(10px);transition:transform .2s,background .25s}
 .panel-overlay.open .panel{transform:translateY(0)}
-.panel-header{padding:22px 24px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--bg2);z-index:1}
+.panel-header{padding:20px 24px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--bg2);z-index:1}
 .panel-title{font-size:15px;font-weight:600}
-.panel-close{background:none;border:none;cursor:pointer;color:var(--text3);font-size:20px;padding:2px;border-radius:6px;display:flex}
-.panel-close:hover{color:var(--text);background:var(--bg3)}
+.panel-close{background:none;border:none;cursor:pointer;color:var(--text3);font-size:20px;padding:2px;border-radius:6px;display:flex}.panel-close:hover{color:var(--text);background:var(--bg3)}
 .panel-body{padding:20px 24px}
 .panel-section{margin-bottom:22px}
 .panel-section-title{font-size:10.5px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.7px;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border)}
-.form-group{margin-bottom:14px}
-.form-label{font-size:11.5px;font-weight:500;color:var(--text2);margin-bottom:5px;display:block}
-.form-control{width:100%;padding:9px 11px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-family:var(--font);font-size:13.5px;outline:none;transition:border .15s,background .25s}
-.form-control:focus{border-color:var(--accent)}
+.form-group{margin-bottom:14px}.form-label{font-size:11.5px;font-weight:500;color:var(--text2);margin-bottom:5px;display:block}
+.form-control{width:100%;padding:9px 11px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-family:var(--font);font-size:13.5px;outline:none;transition:border .15s,background .25s}.form-control:focus{border-color:var(--accent)}
 .hint{font-size:10.5px;color:var(--text3);margin-top:4px;line-height:1.5}
-
-/* ── OPTION PILLS ── */
 .opts{display:flex;gap:6px;flex-wrap:wrap}
-.opt{padding:7px 14px;border-radius:var(--radius-sm);font-size:12.5px;cursor:pointer;border:1px solid var(--border);color:var(--text2);background:var(--bg3);transition:var(--transition);font-family:var(--font);display:flex;align-items:center;gap:5px}
-.opt:hover{border-color:var(--border2);color:var(--text)}
-.opt.active{border-color:var(--accent);color:var(--accent);background:var(--accentbg)}
+.opt{padding:7px 14px;border-radius:var(--radius-sm);font-size:12.5px;cursor:pointer;border:1px solid var(--border);color:var(--text2);background:var(--bg3);transition:var(--transition);font-family:var(--font);display:flex;align-items:center;gap:5px}.opt:hover{border-color:var(--border2);color:var(--text)}.opt.active{border-color:var(--accent);color:var(--accent);background:var(--accentbg)}
 .opt i{font-size:15px}
-
-/* ── ACCENT SWATCHES ── */
 .swatches{display:flex;gap:8px;flex-wrap:wrap}
-.swatch{width:32px;height:32px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:var(--transition);position:relative}
-.swatch.active::after{content:'';position:absolute;inset:-4px;border-radius:50%;border:2px solid var(--accent)}
-.swatch:hover{transform:scale(1.1)}
-
-/* ── OD SETTINGS ── */
+.swatch{width:32px;height:32px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:var(--transition);position:relative}.swatch.active::after{content:'';position:absolute;inset:-4px;border-radius:50%;border:2px solid var(--accent)}.swatch:hover{transform:scale(1.1)}
 .od-info{display:flex;align-items:center;gap:10px;padding:12px 14px;background:var(--bg3);border-radius:var(--radius-sm);border:1px solid var(--border);margin-bottom:14px;transition:background .25s}
 
-/* ── TOAST ── */
 #toast{position:fixed;bottom:22px;right:22px;z-index:999;display:flex;flex-direction:column;gap:8px}
 .toast-item{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:10px 14px;font-size:13px;display:flex;align-items:center;gap:8px;min-width:220px;animation:tin .2s ease;box-shadow:0 4px 16px var(--shadow)}
 .toast-item.ok{border-left:3px solid var(--green)}.toast-item.err{border-left:3px solid var(--red)}.toast-item.info{border-left:3px solid var(--accent)}.toast-item.warn{border-left:3px solid var(--amber)}
 @keyframes tin{from{transform:translateX(16px);opacity:0}to{transform:translateX(0);opacity:1}}
-
-/* ── BACK BTN (for modules) ── */
-.back-btn{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:var(--radius-sm);background:var(--bg3);border:1px solid var(--border);color:var(--text2);font-size:12.5px;cursor:pointer;text-decoration:none;transition:var(--transition);font-family:var(--font)}
-.back-btn:hover{border-color:var(--accent);color:var(--accent);background:var(--accentbg)}
-.back-btn i{font-size:14px}
-
 ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
-@media(max-width:700px){.hero-title{font-size:28px}.modules{padding:0 14px 32px}.topnav{padding:0 14px}.nav-sync-label{display:none}}
+@media(max-width:700px){.hero-title{font-size:28px}.modules{padding:0 14px 32px}.topnav{padding:0 14px}.nav-sync-label{display:none}.sync-bar{padding:6px 14px}.sync-bar-actions .sbtn span{display:none}}
 </style>
 </head>
 <body>
 
+<!-- TOP NAV -->
 <nav class="topnav">
   <a class="logo" href="index.html">
     <div class="logo-icon"><i class="ti ti-snowflake" style="font-size:17px"></i></div>
@@ -195,12 +129,28 @@ footer a:hover{color:var(--accent)}
   <div class="nav-spacer"></div>
   <div style="display:flex;align-items:center;gap:6px">
     <div class="od-dot" id="navDot"></div>
-    <span class="nav-sync-label" id="navSyncMsg">Sin conexión</span>
+    <span class="nav-sync-label" id="navMsg">Sin conexión</span>
   </div>
-  <button class="nav-btn-icon" onclick="toggleTheme()" id="themeBtn" title="Cambiar tema"><i class="ti ti-moon-stars" id="themeIcon"></i></button>
-  <button class="nav-btn nav-btn-ghost" onclick="openPanel()"><i class="ti ti-settings"></i>Configuración</button>
-  <button class="nav-btn nav-btn-primary" onclick="syncAll()"><i class="ti ti-cloud-upload"></i>Sincronizar</button>
+  <button class="nbtn-icon" onclick="toggleTheme()" title="Cambiar tema"><i class="ti ti-moon-stars" id="themeIcon"></i></button>
+  <button class="nbtn nbtn-ghost" onclick="openPanel()"><i class="ti ti-settings"></i>Configuración</button>
 </nav>
+
+<!-- SYNC BAR -->
+<div class="sync-bar" id="syncBar">
+  <div class="sync-bar-status">
+    <div class="od-dot" id="syncDot"></div>
+    <span id="syncMsg" style="color:var(--text2);font-weight:500">Sin conexión a OneDrive</span>
+    <span class="sync-time" id="syncTime"></span>
+  </div>
+  <div class="sync-bar-actions">
+    <button class="sbtn sbtn-success" onclick="saveAllToOD()" id="btnSave">
+      <i class="ti ti-cloud-upload"></i><span>Guardar en OneDrive</span>
+    </button>
+    <button class="sbtn sbtn-ghost" onclick="loadAllFromOD()" id="btnLoad">
+      <i class="ti ti-cloud-download"></i><span>Cargar desde OneDrive</span>
+    </button>
+  </div>
+</div>
 
 <div class="hero">
   <div class="hero-greeting" id="greeting">Buen día</div>
@@ -208,18 +158,7 @@ footer a:hover{color:var(--accent)}
   <p class="hero-sub">Tu asistente personal Snow — finanzas, backups y más, todo sincronizado en OneDrive.</p>
 </div>
 
-<div style="padding:0 28px">
-  <div id="odBanner" class="od-banner">
-    <i class="ti ti-cloud-off" style="font-size:20px;color:var(--text3)" id="bannerIcon"></i>
-    <div style="flex:1">
-      <div style="font-weight:500;font-size:13.5px" id="bannerTitle">OneDrive no conectado</div>
-      <div style="font-size:11.5px;color:var(--text3);margin-top:2px" id="bannerSub">Configura tu cuenta para sincronizar datos entre módulos</div>
-    </div>
-    <div id="bannerAction"></div>
-  </div>
-</div>
-
-<div class="statsbar" style="padding:0 28px" id="statsBar" style="display:none">
+<div class="statsbar" id="statsBar" style="display:none">
   <div class="sbar-card"><div class="sbar-label">Suscripciones activas</div><div class="sbar-val" id="st-subs">—</div><div class="sbar-sub">FinFlow</div></div>
   <div class="sbar-card"><div class="sbar-label">Gasto mensual</div><div class="sbar-val" id="st-gasto">—</div><div class="sbar-sub">Este mes</div></div>
   <div class="sbar-card"><div class="sbar-label">Imágenes de backup</div><div class="sbar-val" id="st-bkp">—</div><div class="sbar-sub">BackupMgr</div></div>
@@ -232,22 +171,14 @@ footer a:hover{color:var(--accent)}
     <div class="module-icon"><i class="ti ti-cash"></i></div>
     <div class="module-name">FinFlow</div>
     <div class="module-desc">Gestión de finanzas personales. Suscripciones, pagos recurrentes, presupuestos y reportes mensuales.</div>
-    <div class="module-tags">
-      <span class="tag tag-green">Finanzas</span>
-      <span class="tag tag-green">Suscripciones</span>
-      <span class="tag tag-green">Presupuesto</span>
-    </div>
+    <div class="module-tags"><span class="tag tag-green">Finanzas</span><span class="tag tag-green">Suscripciones</span><span class="tag tag-green">Presupuesto</span></div>
   </a>
   <a class="module-card backupmgr" href="backupmgr/index.html">
     <i class="ti ti-arrow-right module-arrow"></i>
     <div class="module-icon"><i class="ti ti-database-backup"></i></div>
     <div class="module-name">BackupMgr</div>
     <div class="module-desc">Gestión de imágenes de sistema. Registro de backups, dispositivos de almacenamiento y programación de tareas.</div>
-    <div class="module-tags">
-      <span class="tag tag-blue">Backups</span>
-      <span class="tag tag-blue">Dispositivos</span>
-      <span class="tag tag-blue">Programación</span>
-    </div>
+    <div class="module-tags"><span class="tag tag-blue">Backups</span><span class="tag tag-blue">Dispositivos</span><span class="tag tag-blue">Programación</span></div>
   </a>
   <div class="module-card coming">
     <span class="coming-badge">Próximamente</span>
@@ -271,7 +202,7 @@ footer a:hover{color:var(--accent)}
 </div>
 
 <footer>
-  <span>Snow v1.1 · <a href="https://github.com/immosortiz-cmd/snow" target="_blank">immosortiz-cmd</a></span>
+  <span>Snow v1.2 · <a href="https://github.com/immosortiz-cmd/snow" target="_blank">immosortiz-cmd</a></span>
   <span id="footerSync">Datos locales</span>
 </footer>
 
@@ -283,29 +214,20 @@ footer a:hover{color:var(--accent)}
       <button class="panel-close" onclick="closePanel()"><i class="ti ti-x"></i></button>
     </div>
     <div class="panel-body">
-
-      <!-- PERFIL -->
       <div class="panel-section">
         <div class="panel-section-title">Perfil</div>
-        <div class="form-group">
-          <label class="form-label">Tu nombre</label>
-          <input class="form-control" id="cfgName" placeholder="Nombre o alias" oninput="saveCfg('name',this.value)">
-        </div>
+        <div class="form-group"><label class="form-label">Tu nombre</label><input class="form-control" id="cfgName" placeholder="Nombre o alias" oninput="saveCfg('name',this.value)"></div>
       </div>
-
-      <!-- APARIENCIA -->
       <div class="panel-section">
         <div class="panel-section-title">Apariencia</div>
-        <div class="form-group">
-          <label class="form-label">Tema</label>
+        <div class="form-group"><label class="form-label">Tema</label>
           <div class="opts" id="themeOpts">
             <button class="opt" onclick="setTheme('dark',this)"><i class="ti ti-moon-stars"></i>Oscuro</button>
             <button class="opt" onclick="setTheme('light',this)"><i class="ti ti-sun"></i>Claro</button>
             <button class="opt" onclick="setTheme('auto',this)"><i class="ti ti-device-desktop"></i>Sistema</button>
           </div>
         </div>
-        <div class="form-group">
-          <label class="form-label">Color de acento</label>
+        <div class="form-group"><label class="form-label">Color de acento</label>
           <div class="swatches">
             <div class="swatch" style="background:#5b8af0" onclick="setAccent('blue',this)" title="Azul"></div>
             <div class="swatch" style="background:#3ecf8e" onclick="setAccent('green',this)" title="Verde"></div>
@@ -314,60 +236,46 @@ footer a:hover{color:var(--accent)}
             <div class="swatch" style="background:#f0833e" onclick="setAccent('orange',this)" title="Naranja"></div>
           </div>
         </div>
-        <div class="form-group">
-          <label class="form-label">Tamaño de fuente</label>
+        <div class="form-group"><label class="form-label">Tamaño de fuente</label>
           <div class="opts" id="fontOpts">
             <button class="opt" onclick="setFontSize('compact',this)">Compacto</button>
             <button class="opt" onclick="setFontSize('normal',this)">Normal</button>
             <button class="opt" onclick="setFontSize('large',this)">Grande</button>
           </div>
         </div>
-        <div class="form-group">
-          <label class="form-label">Densidad de interfaz</label>
+        <div class="form-group"><label class="form-label">Densidad</label>
           <div class="opts" id="densityOpts">
             <button class="opt" onclick="setDensity('compact',this)">Compacta</button>
             <button class="opt" onclick="setDensity('normal',this)">Normal</button>
             <button class="opt" onclick="setDensity('spacious',this)">Espaciada</button>
           </div>
         </div>
-        <div class="form-group">
-          <label class="form-label">Animaciones</label>
+        <div class="form-group"><label class="form-label">Animaciones</label>
           <div class="opts" id="animOpts">
             <button class="opt" onclick="setAnim(true,this)"><i class="ti ti-sparkles"></i>Activadas</button>
             <button class="opt" onclick="setAnim(false,this)"><i class="ti ti-ban"></i>Desactivadas</button>
           </div>
         </div>
       </div>
-
-      <!-- ONEDRIVE -->
       <div class="panel-section">
         <div class="panel-section-title">OneDrive — Sincronización</div>
-        <div class="od-info">
-          <div class="od-dot" id="panelDot"></div>
-          <div>
-            <div style="font-size:13px;font-weight:500" id="panelMsg">No conectado</div>
-            <div style="font-size:11px;color:var(--text3);margin-top:1px" id="panelSub">Conecta tu cuenta de Microsoft</div>
-          </div>
+        <div class="od-info"><div class="od-dot" id="panelDot"></div>
+          <div><div style="font-size:13px;font-weight:500" id="panelMsg">No conectado</div>
+          <div style="font-size:11px;color:var(--text3);margin-top:1px" id="panelSub">Conecta tu cuenta de Microsoft</div></div>
         </div>
-        <div class="form-group">
-          <label class="form-label">Client ID de la app Azure</label>
+        <div class="form-group"><label class="form-label">Client ID de la app Azure</label>
           <input class="form-control" id="cfgClientId" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" oninput="saveCfg('clientId',this.value)">
           <div class="hint">portal.azure.com → Azure AD → App registrations → SPA → permiso <strong>Files.ReadWrite</strong></div>
         </div>
-        <div class="form-group">
-          <label class="form-label">Redirect URI (copia exacta a Azure)</label>
+        <div class="form-group"><label class="form-label">Redirect URI</label>
           <input class="form-control" id="cfgRedirect" readonly style="font-family:var(--mono);font-size:11px;color:var(--text3)">
         </div>
         <div style="display:flex;flex-direction:column;gap:8px">
-          <button class="nav-btn nav-btn-primary" onclick="connectOD()" style="justify-content:center;width:100%"><i class="ti ti-cloud"></i>Conectar con OneDrive</button>
-          <button class="nav-btn nav-btn-ghost" onclick="loadFromOD()" style="justify-content:center;width:100%"><i class="ti ti-cloud-download"></i>Cargar datos desde OneDrive</button>
-          <button class="nav-btn nav-btn-ghost" onclick="disconnectOD()" style="justify-content:center;width:100%"><i class="ti ti-plug-x"></i>Desconectar</button>
+          <button class="nbtn nbtn-primary" onclick="connectOD()" style="justify-content:center;width:100%"><i class="ti ti-cloud"></i>Conectar con OneDrive</button>
+          <button class="nbtn nbtn-ghost" onclick="disconnectOD()" style="justify-content:center;width:100%"><i class="ti ti-plug-x"></i>Desconectar</button>
         </div>
-        <div style="margin-top:10px;font-size:11px;color:var(--text3);line-height:1.7">
-          Token compartido entre <strong>FinFlow</strong> y <strong>BackupMgr</strong>. Solo conectas una vez.
-        </div>
+        <div style="margin-top:10px;font-size:11px;color:var(--text3);line-height:1.7">Token compartido entre <strong>FinFlow</strong> y <strong>BackupMgr</strong>. Solo conectas una vez desde aquí.</div>
       </div>
-
     </div>
   </div>
 </div>
@@ -378,226 +286,219 @@ footer a:hover{color:var(--accent)}
 const CFG_KEY = 'snow_cfg';
 let cfg = { name:'', clientId:'', theme:'dark', accent:'blue', fontSize:'normal', density:'normal', animations:true };
 let odToken = null;
+let _ffTx=[], _bkBk=[];
 
 // ── PERSIST ──
 function saveCfgStore(){ localStorage.setItem(CFG_KEY, JSON.stringify(cfg)); }
-function loadCfg(){ const r=localStorage.getItem(CFG_KEY); if(r){ try{ Object.assign(cfg, JSON.parse(r)); }catch(e){} } }
-function saveCfg(k,v){ cfg[k]=v; saveCfgStore(); }
+function loadCfg(){ const r=localStorage.getItem(CFG_KEY); if(r){ try{ Object.assign(cfg,JSON.parse(r)); }catch(e){} } }
+function saveCfg(k,v){ cfg[k]=v; saveCfgStore(); if(k==='name') document.getElementById('userName').textContent=v||'bienvenido'; }
 
 // ── THEME ──
-function setTheme(t, btn){
-  cfg.theme = t;
-  saveCfgStore();
-  applyTheme();
+function setTheme(t,btn){
+  cfg.theme=t; saveCfgStore(); applyTheme();
   document.querySelectorAll('#themeOpts .opt').forEach(b=>b.classList.remove('active'));
   if(btn) btn.classList.add('active');
 }
 function applyTheme(){
-  const t = cfg.theme;
-  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  const actual = t==='auto' ? (prefersDark?'dark':'light') : t;
-  document.documentElement.setAttribute('data-theme', actual);
-  const icon = document.getElementById('themeIcon');
-  if(icon) icon.className = actual==='dark' ? 'ti ti-moon-stars' : 'ti ti-sun';
+  const t=cfg.theme;
+  const dark=t==='auto'?window.matchMedia('(prefers-color-scheme:dark)').matches:t==='dark';
+  document.documentElement.setAttribute('data-theme',dark?'dark':'light');
+  const icon=document.getElementById('themeIcon');
+  if(icon) icon.className=dark?'ti ti-moon-stars':'ti ti-sun';
 }
 function toggleTheme(){
-  const current = cfg.theme;
-  const next = current==='dark'?'light':current==='light'?'auto':'dark';
-  setTheme(next, null);
-  syncThemeOpts();
-  showToast('Tema: '+{dark:'Oscuro',light:'Claro',auto:'Sistema'}[next], 'info');
+  const next={dark:'light',light:'auto',auto:'dark'}[cfg.theme]||'dark';
+  setTheme(next,null); syncAllOpts();
+  showToast({dark:'Tema: Oscuro',light:'Tema: Claro',auto:'Tema: Sistema'}[next],'info');
 }
-function syncThemeOpts(){
-  document.querySelectorAll('#themeOpts .opt').forEach(b=>{
-    b.classList.toggle('active', b.getAttribute('onclick').includes("'"+cfg.theme+"'"));
-  });
-}
+function setAccent(a,el){ cfg.accent=a; saveCfgStore(); document.documentElement.setAttribute('data-accent',a); document.querySelectorAll('.swatch').forEach(s=>s.classList.remove('active')); if(el) el.classList.add('active'); }
+function setFontSize(s,btn){ cfg.fontSize=s; saveCfgStore(); document.documentElement.setAttribute('data-font-size',s); document.querySelectorAll('#fontOpts .opt').forEach(b=>b.classList.remove('active')); if(btn) btn.classList.add('active'); }
+function setDensity(d,btn){ cfg.density=d; saveCfgStore(); document.documentElement.setAttribute('data-density',d); document.querySelectorAll('#densityOpts .opt').forEach(b=>b.classList.remove('active')); if(btn) btn.classList.add('active'); }
+function setAnim(val,btn){ cfg.animations=val; saveCfgStore(); document.documentElement.style.setProperty('--transition',val?'all .18s ease':'none'); document.querySelectorAll('#animOpts .opt').forEach(b=>b.classList.remove('active')); if(btn) btn.classList.add('active'); }
 
-// ── ACCENT ──
-function setAccent(a, el){
-  cfg.accent = a; saveCfgStore();
-  document.documentElement.setAttribute('data-accent', a);
-  document.querySelectorAll('.swatch').forEach(s=>s.classList.remove('active'));
-  if(el) el.classList.add('active');
+function syncAllOpts(){
+  document.querySelectorAll('#themeOpts .opt').forEach(b=>b.classList.toggle('active',b.getAttribute('onclick').includes("'"+cfg.theme+"'")));
+  document.querySelectorAll('.swatch').forEach(s=>s.classList.toggle('active',s.getAttribute('onclick').includes("'"+cfg.accent+"'")));
+  document.querySelectorAll('#fontOpts .opt').forEach(b=>b.classList.toggle('active',b.getAttribute('onclick').includes("'"+cfg.fontSize+"'")));
+  document.querySelectorAll('#densityOpts .opt').forEach(b=>b.classList.toggle('active',b.getAttribute('onclick').includes("'"+cfg.density+"'")));
+  document.querySelectorAll('#animOpts .opt').forEach(b=>b.classList.toggle('active',b.getAttribute('onclick').includes(String(cfg.animations))));
 }
-function syncAccentOpts(){
-  document.querySelectorAll('.swatch').forEach(s=>{
-    s.classList.toggle('active', s.getAttribute('onclick').includes("'"+cfg.accent+"'"));
-  });
-}
-
-// ── FONT SIZE ──
-function setFontSize(s, btn){
-  cfg.fontSize = s; saveCfgStore();
-  document.documentElement.setAttribute('data-font-size', s);
-  document.querySelectorAll('#fontOpts .opt').forEach(b=>b.classList.remove('active'));
-  if(btn) btn.classList.add('active');
-}
-function syncFontOpts(){
-  document.querySelectorAll('#fontOpts .opt').forEach(b=>{
-    b.classList.toggle('active', b.getAttribute('onclick').includes("'"+cfg.fontSize+"'"));
-  });
-}
-
-// ── DENSITY ──
-function setDensity(d, btn){
-  cfg.density = d; saveCfgStore();
-  document.documentElement.setAttribute('data-density', d);
-  document.querySelectorAll('#densityOpts .opt').forEach(b=>b.classList.remove('active'));
-  if(btn) btn.classList.add('active');
-}
-function syncDensityOpts(){
-  document.querySelectorAll('#densityOpts .opt').forEach(b=>{
-    b.classList.toggle('active', b.getAttribute('onclick').includes("'"+cfg.density+"'"));
-  });
-}
-
-// ── ANIMATIONS ──
-function setAnim(val, btn){
-  cfg.animations = val; saveCfgStore();
-  document.documentElement.style.setProperty('--transition', val ? 'all .18s ease' : 'none');
-  document.querySelectorAll('#animOpts .opt').forEach(b=>b.classList.remove('active'));
-  if(btn) btn.classList.add('active');
-}
-function syncAnimOpts(){
-  document.querySelectorAll('#animOpts .opt').forEach(b=>{
-    const isTrue = b.getAttribute('onclick').includes('true');
-    b.classList.toggle('active', cfg.animations === isTrue);
-  });
-}
-
-// ── APPLY ALL SETTINGS ──
 function applyAllSettings(){
   applyTheme();
-  document.documentElement.setAttribute('data-accent', cfg.accent||'blue');
-  document.documentElement.setAttribute('data-font-size', cfg.fontSize||'normal');
-  document.documentElement.setAttribute('data-density', cfg.density||'normal');
+  document.documentElement.setAttribute('data-accent',cfg.accent||'blue');
+  document.documentElement.setAttribute('data-font-size',cfg.fontSize||'normal');
+  document.documentElement.setAttribute('data-density',cfg.density||'normal');
   if(!cfg.animations) document.documentElement.style.setProperty('--transition','none');
-  const n = cfg.name||'bienvenido';
-  document.getElementById('userName').textContent = n;
-  document.getElementById('cfgName').value = cfg.name||'';
-  document.getElementById('cfgClientId').value = cfg.clientId||'';
-  document.getElementById('cfgRedirect').value = getRedirectUri();
-  syncThemeOpts(); syncAccentOpts(); syncFontOpts(); syncDensityOpts(); syncAnimOpts();
+  document.getElementById('userName').textContent=cfg.name||'bienvenido';
+  document.getElementById('cfgName').value=cfg.name||'';
+  document.getElementById('cfgClientId').value=cfg.clientId||'';
+  document.getElementById('cfgRedirect').value=getRedirectUri();
+  syncAllOpts();
 }
 
 // ── GREETING ──
-function setGreeting(){
-  const h = new Date().getHours();
-  document.getElementById('greeting').textContent = h<12?'Buenos días':h<19?'Buenas tardes':'Buenas noches';
-}
+function setGreeting(){ const h=new Date().getHours(); document.getElementById('greeting').textContent=h<12?'Buenos días':h<19?'Buenas tardes':'Buenas noches'; }
 
 // ── ONEDRIVE ──
-function getRedirectUri(){
-  return window.location.origin + window.location.pathname.replace('index.html','') + 'callback.html';
-}
+function getRedirectUri(){ return window.location.origin+window.location.pathname.replace('index.html','')+'callback.html'; }
+
 function connectOD(){
-  const clientId = document.getElementById('cfgClientId').value.trim() || cfg.clientId;
+  const clientId=document.getElementById('cfgClientId').value.trim()||cfg.clientId;
   if(!clientId){ showToast('Ingresa el Client ID primero','err'); return; }
-  cfg.clientId = clientId; saveCfgStore();
+  cfg.clientId=clientId; saveCfgStore();
   localStorage.setItem('snow_od_origin','index.html');
-  const url = `https://login.microsoftonline.com/common/oauth2/v2.0/authorize?client_id=${clientId}&response_type=token&redirect_uri=${encodeURIComponent(getRedirectUri())}&scope=${encodeURIComponent('Files.ReadWrite')}&response_mode=fragment&prompt=select_account`;
-  window.location.href = url;
+  const url=`https://login.microsoftonline.com/common/oauth2/v2.0/authorize?client_id=${clientId}&response_type=token&redirect_uri=${encodeURIComponent(getRedirectUri())}&scope=${encodeURIComponent('Files.ReadWrite')}&response_mode=fragment&prompt=select_account`;
+  window.location.href=url;
 }
 function disconnectOD(){
   odToken=null; localStorage.removeItem('snow_od_token'); localStorage.removeItem('snow_od_ts');
-  updateOdUI(false); showToast('OneDrive desconectado','info');
+  updateSyncUI(false); showToast('OneDrive desconectado','info');
 }
 function checkOAuth(){
-  const stored = localStorage.getItem('snow_od_token');
-  if(stored){ odToken=stored; updateOdUI(true); }
-  const just = localStorage.getItem('snow_od_just_connected');
-  if(just){ localStorage.removeItem('snow_od_just_connected'); showToast('OneDrive conectado ✓','ok'); loadStats(); }
+  const stored=localStorage.getItem('snow_od_token');
+  if(stored){ odToken=stored; updateSyncUI(true); }
+  const just=localStorage.getItem('snow_od_just_connected');
+  if(just){ localStorage.removeItem('snow_od_just_connected'); showToast('OneDrive conectado ✓','ok'); loadAllFromOD(); }
 }
-function updateOdUI(connected){
-  [document.getElementById('navDot'), document.getElementById('panelDot')].forEach(d=>{
-    if(d){ d.style.background = connected?'var(--green)':'var(--text3)'; d.className='od-dot'+(connected?' ok':''); }
-  });
-  document.getElementById('navSyncMsg').textContent = connected?'OneDrive conectado':'Sin conexión';
-  document.getElementById('panelMsg').textContent = connected?'Conectado a OneDrive':'No conectado';
-  document.getElementById('panelSub').textContent = connected?'Token activo — sincronización disponible':'Conecta tu cuenta de Microsoft';
-  const banner = document.getElementById('odBanner');
-  const bIcon = document.getElementById('bannerIcon');
-  const bTitle = document.getElementById('bannerTitle');
-  const bSub = document.getElementById('bannerSub');
-  const bAction = document.getElementById('bannerAction');
-  if(connected){
-    banner.className='od-banner connected';
-    bIcon.className='ti ti-cloud-check'; bIcon.style.color='var(--green)';
-    bTitle.textContent='OneDrive conectado';
-    bSub.textContent='Tus datos se sincronizan automáticamente en ambos módulos';
-    bAction.innerHTML=`<button class="nav-btn nav-btn-ghost" onclick="syncAll()" style="padding:6px 12px;font-size:12px"><i class="ti ti-refresh"></i>Sincronizar</button>`;
-    document.getElementById('statsBar').style.display='grid';
+
+function updateSyncUI(connected){
+  const dots=[document.getElementById('navDot'),document.getElementById('syncDot'),document.getElementById('panelDot')];
+  dots.forEach(d=>{ if(d){ d.style.background=connected?'var(--green)':'var(--text3)'; d.className='od-dot'+(connected?' ok':''); } });
+  document.getElementById('navMsg').textContent=connected?'OneDrive conectado':'Sin conexión';
+  document.getElementById('syncMsg').textContent=connected?'OneDrive conectado — sincronización activa':'Sin conexión a OneDrive';
+  document.getElementById('panelMsg').textContent=connected?'Conectado a OneDrive':'No conectado';
+  document.getElementById('panelSub').textContent=connected?'Token activo — sincronización disponible':'Conecta tu cuenta de Microsoft';
+  const btnSave=document.getElementById('btnSave');
+  const btnLoad=document.getElementById('btnLoad');
+  if(btnSave) btnSave.style.opacity=connected?'1':'0.4';
+  if(btnLoad) btnLoad.style.opacity=connected?'1':'0.4';
+  if(connected){ document.getElementById('statsBar').style.display='grid'; }
+  else { document.getElementById('statsBar').style.display='none'; }
+}
+
+// ── GLOBAL SAVE ALL ──
+async function saveAllToOD(){
+  if(!odToken){ showToast('Conecta OneDrive primero','info'); openPanel(); return; }
+  setSyncState('syncing','Guardando en OneDrive...');
+  let ok=0, fail=0;
+  // Save FinFlow
+  const ff=localStorage.getItem('finflow_db');
+  if(ff){
+    try{
+      const r=await fetch('https://graph.microsoft.com/v1.0/me/drive/root:/Apps/FinFlow/data.json:/content',{
+        method:'PUT',headers:{'Authorization':'Bearer '+odToken,'Content-Type':'application/json'},body:ff
+      });
+      if(r.ok) ok++; else if(r.status===401){ handleExpired(); return; } else fail++;
+    }catch(e){ fail++; }
+  }
+  // Save BackupMgr
+  const bm=localStorage.getItem('snow_bkmgr_db');
+  if(bm){
+    try{
+      const r=await fetch('https://graph.microsoft.com/v1.0/me/drive/root:/Apps/BackupMgr/data.json:/content',{
+        method:'PUT',headers:{'Authorization':'Bearer '+odToken,'Content-Type':'application/json'},body:bm
+      });
+      if(r.ok) ok++; else if(r.status===401){ handleExpired(); return; } else fail++;
+    }catch(e){ fail++; }
+  }
+  if(fail===0){
+    const ts=setLastSync();
+    setSyncState('ok','Guardado en OneDrive · '+ts);
+    showToast('Todos los datos guardados en OneDrive ✓','ok');
     loadStats();
   } else {
-    banner.className='od-banner';
-    bIcon.className='ti ti-cloud-off'; bIcon.style.color='var(--text3)';
-    bTitle.textContent='OneDrive no conectado';
-    bSub.textContent='Configura tu cuenta para sincronizar datos entre módulos';
-    bAction.innerHTML=`<button class="nav-btn nav-btn-primary" onclick="openPanel()" style="padding:6px 12px;font-size:12px"><i class="ti ti-plug"></i>Conectar</button>`;
-    document.getElementById('statsBar').style.display='none';
+    setSyncState('err','Error al guardar ('+(fail)+' módulo'+(fail>1?'s':'')+' fallido'+(fail>1?'s':'')+')');
+    showToast('Error al guardar algunos módulos','err');
   }
 }
 
-async function syncAll(){
+// ── GLOBAL LOAD ALL ──
+async function loadAllFromOD(){
   if(!odToken){ showToast('Conecta OneDrive primero','info'); openPanel(); return; }
-  showToast('Sincronizando...','info');
-  await loadStats();
-  const ts = new Date().toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
-  document.getElementById('st-sync').textContent = ts;
-  document.getElementById('footerSync').textContent = 'Última sync: '+ts;
-  showToast('Sincronización completada','ok');
+  setSyncState('syncing','Cargando desde OneDrive...');
+  let ok=0, fail=0;
+  // Load FinFlow
+  try{
+    const r=await fetch('https://graph.microsoft.com/v1.0/me/drive/root:/Apps/FinFlow/data.json:/content',{headers:{'Authorization':'Bearer '+odToken}});
+    if(r.ok){ const d=await r.json(); localStorage.setItem('finflow_db',JSON.stringify(d)); ok++; }
+    else if(r.status===401){ handleExpired(); return; }
+    else if(r.status!==404) fail++;
+  }catch(e){ fail++; }
+  // Load BackupMgr
+  try{
+    const r=await fetch('https://graph.microsoft.com/v1.0/me/drive/root:/Apps/BackupMgr/data.json:/content',{headers:{'Authorization':'Bearer '+odToken}});
+    if(r.ok){ const d=await r.json(); localStorage.setItem('snow_bkmgr_db',JSON.stringify(d)); ok++; }
+    else if(r.status===401){ handleExpired(); return; }
+    else if(r.status!==404) fail++;
+  }catch(e){ fail++; }
+  if(fail===0){
+    const ts=setLastSync();
+    setSyncState('ok','Cargado desde OneDrive · '+ts);
+    showToast('Datos cargados desde OneDrive ✓','ok');
+    loadStats();
+  } else {
+    setSyncState('err','Error al cargar algunos módulos');
+    showToast('Error al cargar algunos módulos','err');
+  }
 }
 
+function handleExpired(){
+  odToken=null; localStorage.removeItem('snow_od_token'); updateSyncUI(false);
+  setSyncState('err','Sesión expirada — reconecta OneDrive');
+  showToast('Sesión expirada — reconecta desde Configuración','err');
+}
+
+function setSyncState(state, msg){
+  const dot=document.getElementById('syncDot');
+  const msgEl=document.getElementById('syncMsg');
+  if(dot){
+    dot.style.background=state==='ok'?'var(--green)':state==='err'?'var(--red)':'var(--amber)';
+    dot.className='od-dot '+(state==='syncing'?'syncing':state==='ok'?'ok':'err');
+  }
+  if(msgEl) msgEl.textContent=msg;
+}
+
+function setLastSync(){
+  const ts=new Date().toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
+  localStorage.setItem('snow_last_sync',ts);
+  document.getElementById('st-sync').textContent=ts;
+  document.getElementById('footerSync').textContent='Última sync: '+ts;
+  return ts;
+}
+
+// ── STATS ──
 async function loadStats(){
   if(!odToken) return;
+  // Try from localStorage first (already loaded)
   try{
-    const r1 = await fetch('https://graph.microsoft.com/v1.0/me/drive/root:/Apps/FinFlow/data.json:/content',{headers:{'Authorization':'Bearer '+odToken}});
-    if(r1.ok){
-      const ff = await r1.json();
-      const subs = (ff.subscriptions||[]).filter(s=>s.active).length;
-      const now = new Date();
-      const ms = new Date(now.getFullYear(),now.getMonth(),1).toISOString().slice(0,10);
-      const me = new Date(now.getFullYear(),now.getMonth()+1,0).toISOString().slice(0,10);
-      const gasto = (ff.transactions||[]).filter(t=>t.type==='gasto'&&t.date>=ms&&t.date<=me).reduce((a,t)=>a+parseFloat(t.amount||0),0);
-      const cur = ff.settings?.currency||'MXN';
-      document.getElementById('st-subs').textContent = subs;
-      document.getElementById('st-gasto').textContent = new Intl.NumberFormat('es-MX',{style:'currency',currency:cur,maximumFractionDigits:0}).format(gasto);
-      renderActivity(ff.transactions||[], null);
+    const ff=JSON.parse(localStorage.getItem('finflow_db')||'{}');
+    if(ff.subscriptions){
+      const subs=(ff.subscriptions||[]).filter(s=>s.active).length;
+      const n=new Date(); const ms=new Date(n.getFullYear(),n.getMonth(),1).toISOString().slice(0,10); const me=new Date(n.getFullYear(),n.getMonth()+1,0).toISOString().slice(0,10);
+      const gasto=(ff.transactions||[]).filter(t=>t.type==='gasto'&&t.date>=ms&&t.date<=me).reduce((a,t)=>a+parseFloat(t.amount||0),0);
+      const cur=ff.settings?.currency||'MXN';
+      document.getElementById('st-subs').textContent=subs;
+      document.getElementById('st-gasto').textContent=new Intl.NumberFormat('es-MX',{style:'currency',currency:cur,maximumFractionDigits:0}).format(gasto);
+      _ffTx=ff.transactions||[];
     }
   }catch(e){}
   try{
-    const r2 = await fetch('https://graph.microsoft.com/v1.0/me/drive/root:/Apps/BackupMgr/data.json:/content',{headers:{'Authorization':'Bearer '+odToken}});
-    if(r2.ok){
-      const bm = await r2.json();
-      document.getElementById('st-bkp').textContent = (bm.backups||[]).length;
-      renderActivity(null, bm.backups||[]);
-    }
+    const bm=JSON.parse(localStorage.getItem('snow_bkmgr_db')||'{}');
+    if(bm.backups){ document.getElementById('st-bkp').textContent=(bm.backups||[]).length; _bkBk=bm.backups||[]; }
   }catch(e){}
+  renderActivity();
+  document.getElementById('statsBar').style.display='grid';
   document.getElementById('activityWrap').style.display='block';
 }
 
-async function loadFromOD(){
-  if(!odToken){ showToast('Conecta OneDrive primero','info'); return; }
-  await loadStats();
-  showToast('Datos cargados desde OneDrive','ok');
-}
-
-let _ffTx=[], _bkBk=[];
-function renderActivity(ffTx, bkBk){
-  if(ffTx) _ffTx=ffTx;
-  if(bkBk) _bkBk=bkBk;
+function renderActivity(){
   const items=[
     ..._ffTx.slice(0,3).map(t=>({cls:'fin',icon:'ti-cash',label:`<strong>FinFlow</strong> — ${t.description}`,time:(t.date||'').slice(0,10)})),
     ..._bkBk.slice(0,3).map(b=>({cls:'bkp',icon:'ti-database-backup',label:`<strong>BackupMgr</strong> — ${b.name}`,time:(b.date||'').slice(0,10)}))
   ];
   if(!items.length) return;
-  document.getElementById('activityList').innerHTML = items.map(it=>`
-    <div class="act-item">
-      <div class="act-icon ${it.cls}"><i class="ti ${it.icon}"></i></div>
-      <div class="act-msg">${it.label}</div>
-      <div class="act-time">${it.time}</div>
-    </div>`).join('');
+  document.getElementById('activityList').innerHTML=items.map(it=>`<div class="act-item"><div class="act-icon ${it.cls}"><i class="ti ${it.icon}"></i></div><div class="act-msg">${it.label}</div><div class="act-time">${it.time}</div></div>`).join('');
+  document.getElementById('activityWrap').style.display='block';
 }
 
 // ── PANEL ──
@@ -609,11 +510,9 @@ document.addEventListener('keydown',e=>{ if(e.key==='Escape') closePanel(); });
 // ── TOAST ──
 function showToast(msg,type='info'){
   const icons={ok:'ti-check',err:'ti-x',warn:'ti-alert-triangle',info:'ti-info-circle'};
-  const t=document.createElement('div');
-  t.className='toast-item '+type;
+  const t=document.createElement('div'); t.className='toast-item '+type;
   t.innerHTML=`<i class="ti ${icons[type]||'ti-info-circle'}" style="font-size:15px"></i>${msg}`;
-  document.getElementById('toast').appendChild(t);
-  setTimeout(()=>t.remove(),3000);
+  document.getElementById('toast').appendChild(t); setTimeout(()=>t.remove(),3500);
 }
 
 // ── INIT ──
@@ -621,10 +520,14 @@ loadCfg();
 setGreeting();
 applyAllSettings();
 checkOAuth();
-updateOdUI(!!odToken);
+updateSyncUI(!!odToken);
+if(odToken) loadStats();
 
-window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', ()=>{ if(cfg.theme==='auto') applyTheme(); });
+// Restore last sync time
+const lastSync=localStorage.getItem('snow_last_sync');
+if(lastSync){ document.getElementById('st-sync').textContent=lastSync; document.getElementById('footerSync').textContent='Última sync: '+lastSync; }
+
+window.matchMedia('(prefers-color-scheme:dark)').addEventListener('change',()=>{ if(cfg.theme==='auto') applyTheme(); });
 </script>
-  <!-- v1.1 -->
 </body>
 </html>
