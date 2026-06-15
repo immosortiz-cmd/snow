@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Snow — Asistente Personal</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0f1117;--bg2:#161920;--bg3:#1e2130;--bg4:#252840;
+  --border:#2a2d3e;--border2:#3a3d50;
+  --text:#e8eaf0;--text2:#9aa0b8;--text3:#5c6080;
+  --accent:#5b8af0;--accent2:#3d6ee0;--accentbg:rgba(91,138,240,0.12);
+  --green:#3ecf8e;--greenbg:rgba(62,207,142,0.12);
+  --amber:#f0b93e;--amberbg:rgba(240,185,62,0.12);
+  --red:#f05b5b;--redbg:rgba(240,91,91,0.12);
+  --purple:#a07ef0;--purplebg:rgba(160,126,240,0.12);
+  --teal:#3ecfd8;--tealbg:rgba(62,207,216,0.12);
+  --radius:12px;--radius-sm:8px;
+  --font:'DM Sans',system-ui,sans-serif;--mono:'DM Mono',monospace
+}
+body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh}
+
+/* NAV */
+.topnav{background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 28px;height:56px;gap:16px;position:sticky;top:0;z-index:50}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text)}
+.logo-icon{width:32px;height:32px;background:var(--accent);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;color:#fff}
+.logo-name{font-size:16px;font-weight:600;letter-spacing:-.3px}
+.logo-sub{font-size:10px;color:var(--text3);font-family:var(--mono);margin-top:1px}
+.nav-spacer{flex:1}
+.nav-sync{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text3)}
+.od-dot{width:7px;height:7px;border-radius:50%;background:var(--text3);transition:background .3s}
+.od-dot.ok{background:var(--green)}
+.od-dot.err{background:var(--red)}
+.nav-btn{padding:7px 13px;border-radius:var(--radius-sm);font-family:var(--font);font-size:13px;font-weight:500;cursor:pointer;border:none;display:inline-flex;align-items:center;gap:6px;transition:all .15s}
+.nav-btn i{font-size:15px}
+.nav-btn-ghost{background:none;border:1px solid var(--border2);color:var(--text2)}
+.nav-btn-ghost:hover{border-color:var(--accent);color:var(--accent);background:var(--accentbg)}
+.nav-btn-primary{background:var(--accent);color:#fff}
+.nav-btn-primary:hover{background:var(--accent2)}
+
+/* HERO */
+.hero{padding:56px 28px 40px;text-align:center}
+.hero-greeting{font-size:13px;color:var(--text3);font-family:var(--mono);margin-bottom:10px;letter-spacing:.05em}
+.hero-title{font-size:42px;font-weight:600;letter-spacing:-1.5px;margin-bottom:10px}
+.hero-title span{color:var(--accent)}
+.hero-sub{font-size:15px;color:var(--text2);max-width:480px;margin:0 auto 28px;line-height:1.6}
+.hero-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+
+/* OD BANNER */
+.od-banner{margin:0 28px 32px;padding:14px 18px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);display:flex;align-items:center;gap:12px;font-size:13px}
+.od-banner.connected{border-color:rgba(62,207,142,0.3);background:var(--greenbg)}
+.od-banner.disconnected{border-color:rgba(91,138,240,0.2)}
+.od-banner i{font-size:20px}
+.od-banner-text{flex:1}
+.od-banner-title{font-weight:500;font-size:13.5px}
+.od-banner-sub{font-size:11.5px;color:var(--text3);margin-top:2px}
+
+/* MODULES GRID */
+.modules{padding:0 28px 48px;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;max-width:1100px;margin:0 auto}
+.module-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:24px;text-decoration:none;color:var(--text);transition:all .2s;cursor:pointer;position:relative;overflow:hidden;display:block}
+.module-card:hover{border-color:var(--border2);transform:translateY(-2px)}
+.module-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:var(--radius) var(--radius) 0 0}
+.module-card.finflow::before{background:var(--green)}
+.module-card.backupmgr::before{background:var(--accent)}
+.module-card.coming::before{background:var(--border)}
+.module-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:16px}
+.module-card.finflow .module-icon{background:var(--greenbg);color:var(--green)}
+.module-card.backupmgr .module-icon{background:var(--accentbg);color:var(--accent)}
+.module-card.coming .module-icon{background:var(--bg3);color:var(--text3)}
+.module-name{font-size:17px;font-weight:600;margin-bottom:6px}
+.module-desc{font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:16px}
+.module-tags{display:flex;gap:6px;flex-wrap:wrap}
+.tag{font-size:10.5px;padding:3px 8px;border-radius:20px;font-family:var(--mono);font-weight:500}
+.tag-green{background:var(--greenbg);color:var(--green)}
+.tag-blue{background:var(--accentbg);color:var(--accent)}
+.tag-gray{background:var(--bg3);color:var(--text3)}
+.tag-amber{background:var(--amberbg);color:var(--amber)}
+.module-arrow{position:absolute;top:22px;right:22px;font-size:20px;color:var(--text3);transition:all .2s}
+.module-card:hover .module-arrow{color:var(--accent);transform:translateX(3px)}
+.module-card.coming{opacity:.55;pointer-events:none}
+.coming-badge{position:absolute;top:20px;right:20px;font-size:10px;background:var(--bg3);color:var(--text3);padding:3px 8px;border-radius:20px;font-family:var(--mono)}
+
+/* STATS BAR */
+.statsbar{max-width:1100px;margin:0 auto 32px;padding:0 28px;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+.sbar-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:16px}
+.sbar-label{font-size:10.5px;color:var(--text3);text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px}
+.sbar-val{font-size:22px;font-weight:600;font-family:var(--mono);letter-spacing:-1px}
+.sbar-sub{font-size:11px;color:var(--text3);margin-top:3px}
+
+/* ACTIVITY */
+.activity-wrap{max-width:1100px;margin:0 auto 48px;padding:0 28px}
+.section-title{font-size:13px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.6px;margin-bottom:14px}
+.activity-list{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.act-item{display:flex;align-items:center;gap:12px;padding:13px 18px;border-bottom:1px solid var(--border);font-size:13px}
+.act-item:last-child{border-bottom:none}
+.act-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.act-icon.fin{background:var(--greenbg);color:var(--green)}
+.act-icon.bkp{background:var(--accentbg);color:var(--accent)}
+.act-msg{flex:1;color:var(--text2)}
+.act-msg strong{color:var(--text);font-weight:500}
+.act-time{font-size:11px;color:var(--text3);font-family:var(--mono)}
+
+/* FOOTER */
+footer{border-top:1px solid var(--border);padding:20px 28px;display:flex;align-items:center;justify-content:space-between;font-size:12px;color:var(--text3)}
+footer a{color:var(--text3);text-decoration:none}
+footer a:hover{color:var(--accent)}
+
+/* SETTINGS PANEL */
+.panel-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:200;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s;backdrop-filter:blur(4px)}
+.panel-overlay.open{opacity:1;pointer-events:all}
+.panel{background:var(--bg2);border:1px solid var(--border2);border-radius:16px;padding:28px;width:100%;max-width:460px;transform:translateY(8px);transition:transform .2s}
+.panel-overlay.open .panel{transform:translateY(0)}
+.panel-title{font-size:16px;font-weight:600;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between}
+.panel-close{background:none;border:none;cursor:pointer;color:var(--text3);font-size:20px;padding:2px;border-radius:6px}
+.panel-close:hover{color:var(--text);background:var(--bg3)}
+.form-group{margin-bottom:14px}
+.form-label{font-size:11.5px;font-weight:500;color:var(--text2);margin-bottom:5px;display:block}
+.form-control{width:100%;padding:9px 11px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-family:var(--font);font-size:13.5px;outline:none;transition:border .15s}
+.form-control:focus{border-color:var(--accent)}
+.hint{font-size:10.5px;color:var(--text3);margin-top:4px;line-height:1.5}
+.divider{height:1px;background:var(--border);margin:18px 0}
+
+#toast{position:fixed;bottom:22px;right:22px;z-index:999;display:flex;flex-direction:column;gap:8px}
+.toast-item{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:10px 14px;font-size:13px;display:flex;align-items:center;gap:8px;min-width:220px;animation:tin .2s ease}
+.toast-item.ok{border-left:3px solid var(--green)}.toast-item.err{border-left:3px solid var(--red)}.toast-item.info{border-left:3px solid var(--accent)}
+@keyframes tin{from{transform:translateX(16px);opacity:0}to{transform:translateX(0);opacity:1}}
+
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <a class="logo" href="index.html">
+    <div class="logo-icon"><i class="ti ti-snowflake" style="font-size:17px"></i></div>
+    <div><div class="logo-name">Snow</div><div class="logo-sub">Asistente Personal</div></div>
+  </a>
+  <div class="nav-spacer"></div>
+  <div class="nav-sync">
+    <div class="od-dot" id="navDot"></div>
+    <span id="navSyncMsg">Sin conexión</span>
+  </div>
+  <button class="nav-btn nav-btn-ghost" onclick="openPanel()"><i class="ti ti-settings"></i>Configuración</button>
+  <button class="nav-btn nav-btn-primary" onclick="syncAll()"><i class="ti ti-cloud-upload"></i>Sincronizar</button>
+</nav>
+
+<div class="hero">
+  <div class="hero-greeting" id="greeting">Buen día</div>
+  <h1 class="hero-title">Hola, <span id="userName">bienvenido</span> ❄️</h1>
+  <p class="hero-sub">Tu asistente personal Snow — finanzas, backups y más, todo sincronizado en OneDrive.</p>
+</div>
+
+<div id="odBanner" class="od-banner disconnected" style="max-width:1100px;margin:0 auto 32px;margin-left:28px;margin-right:28px">
+  <i class="ti ti-cloud-off" style="color:var(--text3)"></i>
+  <div class="od-banner-text">
+    <div class="od-banner-title">OneDrive no conectado</div>
+    <div class="od-banner-sub">Configura tu cuenta para sincronizar datos entre módulos</div>
+  </div>
+  <button class="nav-btn nav-btn-primary" onclick="openPanel()" style="padding:6px 12px;font-size:12px"><i class="ti ti-plug"></i>Conectar</button>
+</div>
+
+<div class="statsbar" id="statsBar" style="display:none">
+  <div class="sbar-card"><div class="sbar-label">Suscripciones activas</div><div class="sbar-val" id="st-subs">—</div><div class="sbar-sub">FinFlow</div></div>
+  <div class="sbar-card"><div class="sbar-label">Gasto mensual</div><div class="sbar-val" id="st-gasto">—</div><div class="sbar-sub">Este mes</div></div>
+  <div class="sbar-card"><div class="sbar-label">Imágenes de backup</div><div class="sbar-val" id="st-bkp">—</div><div class="sbar-sub">BackupMgr</div></div>
+  <div class="sbar-card"><div class="sbar-label">Última sincronización</div><div class="sbar-val" style="font-size:15px;padding-top:4px" id="st-sync">—</div><div class="sbar-sub">OneDrive</div></div>
+</div>
+
+<div class="modules">
+  <a class="module-card finflow" href="finflow/index.html">
+    <i class="ti ti-arrow-right module-arrow"></i>
+    <div class="module-icon"><i class="ti ti-cash"></i></div>
+    <div class="module-name">FinFlow</div>
+    <div class="module-desc">Gestión de finanzas personales. Suscripciones, pagos recurrentes, presupuestos y reportes mensuales.</div>
+    <div class="module-tags">
+      <span class="tag tag-green">Finanzas</span>
+      <span class="tag tag-green">Suscripciones</span>
+      <span class="tag tag-green">Presupuesto</span>
+    </div>
+  </a>
+
+  <a class="module-card backupmgr" href="backupmgr/index.html">
+    <i class="ti ti-arrow-right module-arrow"></i>
+    <div class="module-icon"><i class="ti ti-database-backup"></i></div>
+    <div class="module-name">BackupMgr</div>
+    <div class="module-desc">Gestión de imágenes de sistema. Registro de backups, dispositivos de almacenamiento y programación de tareas.</div>
+    <div class="module-tags">
+      <span class="tag tag-blue">Backups</span>
+      <span class="tag tag-blue">Dispositivos</span>
+      <span class="tag tag-blue">Programación</span>
+    </div>
+  </a>
+
+  <div class="module-card coming">
+    <span class="coming-badge">Próximamente</span>
+    <div class="module-icon"><i class="ti ti-checklist"></i></div>
+    <div class="module-name">TaskFlow</div>
+    <div class="module-desc">Gestión de tareas y proyectos personales. Kanban, prioridades y seguimiento de objetivos.</div>
+    <div class="module-tags">
+      <span class="tag tag-gray">Tareas</span>
+      <span class="tag tag-gray">Proyectos</span>
+    </div>
+  </div>
+
+  <div class="module-card coming">
+    <span class="coming-badge">Próximamente</span>
+    <div class="module-icon"><i class="ti ti-device-desktop"></i></div>
+    <div class="module-name">AssetMgr</div>
+    <div class="module-desc">Inventario de equipos y activos tecnológicos. Hardware, licencias y garantías.</div>
+    <div class="module-tags">
+      <span class="tag tag-gray">Inventario</span>
+      <span class="tag tag-gray">Hardware</span>
+    </div>
+  </div>
+</div>
+
+<div class="activity-wrap" id="activityWrap" style="display:none">
+  <div class="section-title">Actividad reciente</div>
+  <div class="activity-list" id="activityList"></div>
+</div>
+
+<footer>
+  <span>Snow v1.0 — Asistente Personal · <a href="https://github.com/immosortiz-cmd" target="_blank">immosortiz-cmd</a></span>
+  <span id="footerSync">Datos locales</span>
+</footer>
+
+<!-- Settings Panel -->
+<div class="panel-overlay" id="settingsPanel" onclick="e=>e.target===this&&closePanel()">
+  <div class="panel">
+    <div class="panel-title">
+      Configuración Snow
+      <button class="panel-close" onclick="closePanel()"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Tu nombre</label>
+      <input class="form-control" id="cfgName" placeholder="Nombre o alias" oninput="saveCfg('name',this.value)">
+    </div>
+    <div class="divider"></div>
+    <div style="font-size:13px;font-weight:500;margin-bottom:12px;color:var(--text2)">OneDrive — Sincronización</div>
+    <div style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:var(--bg3);border-radius:var(--radius-sm);border:1px solid var(--border);margin-bottom:14px">
+      <div class="od-dot" id="panelDot"></div>
+      <div>
+        <div style="font-size:13px;font-weight:500" id="panelMsg">No conectado</div>
+        <div style="font-size:11px;color:var(--text3);margin-top:1px" id="panelSub">Conecta tu cuenta de Microsoft</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Client ID de la app Azure</label>
+      <input class="form-control" id="cfgClientId" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" oninput="saveCfg('clientId',this.value)">
+      <div class="hint">portal.azure.com → Azure AD → App registrations → SPA → permiso <strong>Files.ReadWrite</strong></div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Redirect URI (copia a Azure)</label>
+      <input class="form-control" id="cfgRedirect" readonly style="font-family:var(--mono);font-size:11px;color:var(--text3)">
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-top:4px">
+      <button class="nav-btn nav-btn-primary" onclick="connectOD()" style="justify-content:center;width:100%"><i class="ti ti-cloud"></i>Conectar con OneDrive</button>
+      <button class="nav-btn nav-btn-ghost" onclick="disconnectOD()" style="justify-content:center;width:100%"><i class="ti ti-plug-x"></i>Desconectar</button>
+    </div>
+    <div style="margin-top:10px;font-size:11px;color:var(--text3);line-height:1.7">
+      El token de OneDrive es compartido entre <strong>FinFlow</strong> y <strong>BackupMgr</strong>. Solo necesitas conectarte una vez aquí.
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+const CFG_KEY = 'snow_cfg';
+let cfg = { name:'', clientId:'' };
+let odToken = null;
+
+function saveCfgStore(){ localStorage.setItem(CFG_KEY, JSON.stringify(cfg)); }
+function loadCfg(){ const r=localStorage.getItem(CFG_KEY); if(r){ try{ cfg=JSON.parse(r); }catch(e){} } }
+function saveCfg(k,v){ cfg[k]=v; saveCfgStore(); if(k==='name') applyName(); }
+
+function applyName(){
+  const n = cfg.name || 'bienvenido';
+  document.getElementById('userName').textContent = n;
+}
+
+function setGreeting(){
+  const h = new Date().getHours();
+  const g = h<12?'Buenos días':h<19?'Buenas tardes':'Buenas noches';
+  document.getElementById('greeting').textContent = g;
+}
+
+// OneDrive
+function connectOD(){
+  const clientId = cfg.clientId || document.getElementById('cfgClientId').value.trim();
+  if(!clientId){ showToast('Ingresa el Client ID primero','err'); return; }
+  cfg.clientId = clientId; saveCfgStore();
+  const redirect = getRedirectUri();
+  localStorage.setItem('snow_od_origin','index.html');
+  const url = `https://login.microsoftonline.com/common/oauth2/v2.0/authorize?client_id=${clientId}&response_type=token&redirect_uri=${encodeURIComponent(redirect)}&scope=${encodeURIComponent('Files.ReadWrite')}&response_mode=fragment&prompt=select_account`;
+  window.location.href = url;
+}
+
+function disconnectOD(){
+  odToken = null;
+  localStorage.removeItem('snow_od_token');
+  localStorage.removeItem('snow_od_ts');
+  updateOdUI(false);
+  showToast('OneDrive desconectado','info');
+}
+
+function checkOAuth(){
+  const stored = localStorage.getItem('snow_od_token');
+  if(stored){ odToken = stored; updateOdUI(true); }
+  const just = localStorage.getItem('snow_od_just_connected');
+  if(just){ localStorage.removeItem('snow_od_just_connected'); showToast('OneDrive conectado ✓','ok'); loadStats(); }
+}
+
+function getRedirectUri(){
+  return window.location.origin + window.location.pathname.replace('index.html','') + 'callback.html';
+}
+
+function updateOdUI(connected){
+  const dots = [document.getElementById('navDot'), document.getElementById('panelDot')];
+  dots.forEach(d=>{ if(d){ d.style.background = connected?'var(--green)':'var(--text3)'; d.className='od-dot'+(connected?' ok':''); } });
+  document.getElementById('navSyncMsg').textContent = connected ? 'OneDrive conectado' : 'Sin conexión';
+  document.getElementById('panelMsg').textContent = connected ? 'Conectado a OneDrive' : 'No conectado';
+  document.getElementById('panelSub').textContent = connected ? 'Token activo — sincronización disponible' : 'Conecta tu cuenta de Microsoft';
+  const banner = document.getElementById('odBanner');
+  if(connected){
+    banner.className='od-banner connected';
+    banner.innerHTML=`<i class="ti ti-cloud-check" style="color:var(--green)"></i><div class="od-banner-text"><div class="od-banner-title">OneDrive conectado</div><div class="od-banner-sub">Tus datos se sincronizan automáticamente en ambos módulos</div></div><button class="nav-btn nav-btn-ghost" onclick="syncAll()" style="padding:6px 12px;font-size:12px"><i class="ti ti-refresh"></i>Sincronizar</button>`;
+    document.getElementById('statsBar').style.display='grid';
+    loadStats();
+  } else {
+    banner.className='od-banner disconnected';
+    banner.innerHTML=`<i class="ti ti-cloud-off" style="color:var(--text3)"></i><div class="od-banner-text"><div class="od-banner-title">OneDrive no conectado</div><div class="od-banner-sub">Configura tu cuenta para sincronizar datos entre módulos</div></div><button class="nav-btn nav-btn-primary" onclick="openPanel()" style="padding:6px 12px;font-size:12px"><i class="ti ti-plug"></i>Conectar</button>`;
+    document.getElementById('statsBar').style.display='none';
+  }
+}
+
+async function syncAll(){
+  if(!odToken){ showToast('Conecta OneDrive primero','info'); openPanel(); return; }
+  showToast('Sincronizando...','info');
+  await loadStats();
+  showToast('Sincronización completada','ok');
+  const ts = new Date().toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
+  document.getElementById('st-sync').textContent = ts;
+  document.getElementById('footerSync').textContent = 'Última sync: '+ts;
+}
+
+async function loadStats(){
+  if(!odToken) return;
+  // Load FinFlow data
+  try{
+    const r1 = await fetch('https://graph.microsoft.com/v1.0/me/drive/root:/Apps/FinFlow/data.json:/content',{headers:{'Authorization':'Bearer '+odToken}});
+    if(r1.ok){
+      const ff = await r1.json();
+      const subs = (ff.subscriptions||[]).filter(s=>s.active).length;
+      const now = new Date();
+      const ms = new Date(now.getFullYear(),now.getMonth(),1).toISOString().slice(0,10);
+      const me = new Date(now.getFullYear(),now.getMonth()+1,0).toISOString().slice(0,10);
+      const gasto = (ff.transactions||[]).filter(t=>t.type==='gasto'&&t.date>=ms&&t.date<=me).reduce((a,t)=>a+parseFloat(t.amount||0),0);
+      const cur = ff.settings?.currency||'MXN';
+      document.getElementById('st-subs').textContent = subs;
+      document.getElementById('st-gasto').textContent = new Intl.NumberFormat('es-MX',{style:'currency',currency:cur,maximumFractionDigits:0}).format(gasto);
+      renderActivity(ff, null);
+    }
+  }catch(e){}
+  // Load BackupMgr data
+  try{
+    const r2 = await fetch('https://graph.microsoft.com/v1.0/me/drive/root:/Apps/BackupMgr/data.json:/content',{headers:{'Authorization':'Bearer '+odToken}});
+    if(r2.ok){
+      const bm = await r2.json();
+      document.getElementById('st-bkp').textContent = (bm.backups||[]).length;
+      renderActivity(null, bm);
+    }
+  }catch(e){}
+  document.getElementById('activityWrap').style.display='block';
+}
+
+function renderActivity(ff, bm){
+  const items = [];
+  if(ff){
+    (ff.transactions||[]).slice(0,3).forEach(t=>{
+      items.push({icon:'fin',iconClass:'ti-cash',label:`<strong>FinFlow</strong> — ${t.description}`,sub:t.date,amt:t.type==='gasto'?'–'+t.amount:'+'+t.amount});
+    });
+  }
+  if(bm){
+    (bm.backups||[]).slice(0,3).forEach(b=>{
+      items.push({icon:'bkp',iconClass:'ti-database-backup',label:`<strong>BackupMgr</strong> — ${b.name}`,sub:b.date,status:b.status});
+    });
+  }
+  if(!items.length) return;
+  document.getElementById('activityList').innerHTML = items.map(it=>`
+    <div class="act-item">
+      <div class="act-icon ${it.icon}"><i class="ti ${it.iconClass}"></i></div>
+      <div class="act-msg">${it.label}</div>
+      <div class="act-time">${(it.sub||'').slice(0,10)}</div>
+    </div>`).join('');
+  document.getElementById('activityWrap').style.display='block';
+}
+
+// Panel
+function openPanel(){
+  document.getElementById('settingsPanel').classList.add('open');
+  document.getElementById('cfgName').value = cfg.name||'';
+  document.getElementById('cfgClientId').value = cfg.clientId||'';
+  document.getElementById('cfgRedirect').value = getRedirectUri();
+}
+function closePanel(){ document.getElementById('settingsPanel').classList.remove('open'); }
+document.getElementById('settingsPanel').addEventListener('click',e=>{ if(e.target===document.getElementById('settingsPanel')) closePanel(); });
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') closePanel(); });
+
+// Toast
+function showToast(msg,type='info'){
+  const icons={ok:'ti-check',err:'ti-x',warn:'ti-alert-triangle',info:'ti-info-circle'};
+  const t=document.createElement('div');
+  t.className='toast-item '+type;
+  t.innerHTML=`<i class="ti ${icons[type]||'ti-info-circle'}" style="font-size:15px"></i>${msg}`;
+  document.getElementById('toast').appendChild(t);
+  setTimeout(()=>t.remove(),3000);
+}
+
+// Init
+loadCfg();
+setGreeting();
+applyName();
+checkOAuth();
+updateOdUI(!!odToken);
+document.getElementById('cfgRedirect').value = getRedirectUri();
+</script>
+</body>
+</html>

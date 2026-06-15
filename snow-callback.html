@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="UTF-8"><title>Snow — Conectando...</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:#0f1117;color:#e8eaf0;display:flex;align-items:center;justify-content:center;min-height:100vh;flex-direction:column;gap:16px}
+.spinner{width:36px;height:36px;border:3px solid rgba(91,138,240,0.2);border-top-color:#5b8af0;border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+p{font-size:14px;color:#5c6080}
+</style>
+</head>
+<body>
+<div class="spinner"></div>
+<p id="msg">Conectando con OneDrive...</p>
+<script>
+const hash = window.location.hash;
+const ref  = document.referrer || '';
+
+function redirect(path){
+  const base = window.location.origin + window.location.pathname.replace('callback.html','');
+  window.location.href = base + path;
+}
+
+if(hash && hash.includes('access_token')){
+  const params = new URLSearchParams(hash.slice(1));
+  const token  = params.get('access_token');
+  if(token){
+    localStorage.setItem('snow_od_token', token);
+    localStorage.setItem('snow_od_ts', Date.now());
+    localStorage.setItem('snow_od_just_connected', '1');
+    document.getElementById('msg').textContent = '¡Conectado! Redirigiendo...';
+    const origin = localStorage.getItem('snow_od_origin') || 'index.html';
+    localStorage.removeItem('snow_od_origin');
+    setTimeout(()=> redirect(origin), 600);
+  } else {
+    redirect('index.html');
+  }
+} else {
+  redirect('index.html');
+}
+</script>
+</body>
+</html>
