@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BackupMgr — Snow</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0f1117;--bg2:#161920;--bg3:#1e2130;--bg4:#252840;
+  --border:#2a2d3e;--border2:#3a3d50;
+  --text:#e8eaf0;--text2:#9aa0b8;--text3:#5c6080;
+  --accent:#5b8af0;--accent2:#3d6ee0;--accentbg:rgba(91,138,240,0.12);
+  --green:#3ecf8e;--greenbg:rgba(62,207,142,0.12);
+  --amber:#f0b93e;--amberbg:rgba(240,185,62,0.12);
+  --red:#f05b5b;--redbg:rgba(240,91,91,0.12);
+  --radius:12px;--radius-sm:8px;
+  --font:'DM Sans',system-ui,sans-serif;--mono:'DM Mono',monospace
+}
+body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+.shell{display:flex;min-height:100vh}
+.sidebar{width:240px;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;z-index:100;overflow-y:auto}
+.content{margin-left:240px;flex:1;min-height:100vh;padding:28px}
+
+/* BREADCRUMB */
+.breadcrumb{background:#0d1117;border-bottom:1px solid var(--border);padding:8px 20px;font-size:12.5px;display:flex;align-items:center;gap:8px;color:var(--text3)}
+.breadcrumb a{color:var(--text3);text-decoration:none;display:flex;align-items:center;gap:5px;transition:color .15s}
+.breadcrumb a:hover{color:var(--accent)}
+.breadcrumb i{font-size:13px}
+
+.logo{padding:20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.logo-icon{width:36px;height:36px;background:var(--accent);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:19px;color:#fff;flex-shrink:0}
+.logo-text{font-size:17px;font-weight:600;letter-spacing:-.3px}
+.logo-sub{font-size:10px;color:var(--text3);font-family:var(--mono)}
+nav{padding:14px 10px;flex:1}
+.nav-label{font-size:10px;font-weight:600;color:var(--text3);letter-spacing:1px;text-transform:uppercase;padding:0 8px;margin:10px 0 5px}
+.nav-item{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:var(--radius-sm);cursor:pointer;color:var(--text2);font-size:13.5px;font-weight:400;transition:all .15s;margin-bottom:2px;border:none;background:none;width:100%;text-align:left;font-family:var(--font)}
+.nav-item:hover{background:var(--bg3);color:var(--text)}
+.nav-item.active{background:var(--accentbg);color:var(--accent);font-weight:500}
+.nav-item i{font-size:17px;flex-shrink:0}
+.nav-count{margin-left:auto;font-size:10px;background:var(--bg3);color:var(--text3);padding:1px 7px;border-radius:20px;font-family:var(--mono)}
+.sidebar-bottom{padding:14px 10px;border-top:1px solid var(--border)}
+.sync-btn{display:flex;align-items:center;gap:8px;padding:9px 10px;border-radius:var(--radius-sm);cursor:pointer;color:var(--text2);font-size:13px;background:none;border:1px solid var(--border);width:100%;transition:all .15s;font-family:var(--font)}
+.sync-btn:hover{border-color:var(--accent);color:var(--accent)}
+.sync-btn i{font-size:16px}
+.sync-status{font-size:10px;font-family:var(--mono);margin-left:auto}
+.sync-status.ok{color:var(--green)}.sync-status.err{color:var(--red)}.sync-status.syncing{color:var(--amber)}
+
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:26px}
+.page-title{font-size:22px;font-weight:600;letter-spacing:-.4px}
+.page-sub{font-size:12px;color:var(--text3);margin-top:2px}
+.topbar-right{display:flex;gap:10px;align-items:center}
+
+.btn{padding:8px 15px;border-radius:var(--radius-sm);font-family:var(--font);font-size:13px;font-weight:500;cursor:pointer;transition:all .15s;border:none;display:inline-flex;align-items:center;gap:6px}
+.btn i{font-size:15px}
+.btn-primary{background:var(--accent);color:#fff}.btn-primary:hover{background:var(--accent2)}
+.btn-ghost{background:none;border:1px solid var(--border2);color:var(--text2)}.btn-ghost:hover{border-color:var(--accent);color:var(--accent);background:var(--accentbg)}
+.btn-danger{background:var(--redbg);color:var(--red);border:1px solid transparent}.btn-danger:hover{background:var(--red);color:#fff}
+.btn-sm{padding:5px 10px;font-size:12px}
+
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:20px}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin-bottom:24px}
+.stat-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:18px}
+.stat-label{font-size:10.5px;color:var(--text3);font-weight:500;text-transform:uppercase;letter-spacing:.7px;margin-bottom:8px}
+.stat-val{font-size:26px;font-weight:600;letter-spacing:-1px;font-family:var(--mono)}
+.stat-sub{font-size:11px;color:var(--text3);margin-top:4px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
+
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+thead th{font-size:10.5px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.6px;padding:8px 12px;border-bottom:1px solid var(--border);text-align:left;white-space:nowrap}
+tbody tr{border-bottom:1px solid var(--border);transition:background .1s}
+tbody tr:hover{background:var(--bg3)}
+tbody tr:last-child{border-bottom:none}
+td{padding:11px 12px;vertical-align:middle}
+.table-wrap{overflow-x:auto}
+.action-btn{padding:5px;border-radius:6px;background:none;border:none;cursor:pointer;color:var(--text3);transition:all .15s;font-size:15px}
+.action-btn:hover{background:var(--bg3);color:var(--text)}
+.action-btn.del:hover{background:var(--redbg);color:var(--red)}
+
+.badge{display:inline-flex;align-items:center;font-size:11px;font-weight:500;padding:3px 9px;border-radius:20px;font-family:var(--mono);white-space:nowrap}
+.bg{background:var(--greenbg);color:var(--green)}.bb{background:var(--accentbg);color:var(--accent)}
+.ba{background:var(--amberbg);color:var(--amber)}.br{background:var(--redbg);color:var(--red)}.bgr{background:var(--bg3);color:var(--text2)}
+
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:200;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s;backdrop-filter:blur(4px)}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal{background:var(--bg2);border:1px solid var(--border2);border-radius:16px;padding:26px;width:100%;max-width:500px;max-height:90vh;overflow-y:auto;transform:translateY(8px);transition:transform .2s}
+.modal-overlay.open .modal{transform:translateY(0)}
+.modal-title{font-size:16px;font-weight:600;margin-bottom:18px;display:flex;align-items:center;justify-content:space-between}
+.modal-close{background:none;border:none;cursor:pointer;color:var(--text3);padding:4px;border-radius:6px;font-size:18px}
+.modal-close:hover{color:var(--text);background:var(--bg3)}
+.form-group{margin-bottom:14px}
+.form-label{font-size:11.5px;font-weight:500;color:var(--text2);margin-bottom:5px;display:block}
+.form-control{width:100%;padding:9px 11px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-family:var(--font);font-size:13.5px;transition:border .15s;outline:none}
+.form-control:focus{border-color:var(--accent)}
+.form-control option{background:var(--bg3)}
+select.form-control{cursor:pointer}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.hint{font-size:10.5px;color:var(--text3);margin-top:4px;line-height:1.5}
+.view{display:none}.view.active{display:block}
+
+.od-status{display:flex;align-items:center;gap:10px;padding:13px 15px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--bg3);margin-bottom:14px}
+.od-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;transition:background .3s}
+
+.bar-bg{height:5px;background:var(--bg3);border-radius:4px;overflow:hidden;margin-top:6px}
+.bar-fill{height:100%;border-radius:4px;background:var(--accent)}
+.bar-fill.warn{background:var(--amber)}.bar-fill.danger{background:var(--red)}
+
+.device-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-bottom:22px}
+.device-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px}
+.dev-icon{width:38px;height:38px;border-radius:9px;background:var(--accentbg);color:var(--accent);display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0}
+
+.log-entry{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border-bottom:1px solid var(--border);font-size:12.5px}
+.log-entry:last-child{border-bottom:none}
+.log-time{color:var(--text3);font-family:var(--mono);min-width:140px;padding-top:1px}
+.log-msg{color:var(--text2);flex:1;line-height:1.5}
+.log-msg strong{color:var(--text);font-weight:500}
+
+#toast{position:fixed;bottom:22px;right:22px;z-index:999;display:flex;flex-direction:column;gap:8px}
+.toast-item{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:11px 15px;font-size:13px;display:flex;align-items:center;gap:8px;min-width:240px;animation:tin .2s ease}
+.toast-item.ok{border-left:3px solid var(--green)}.toast-item.err{border-left:3px solid var(--red)}.toast-item.info{border-left:3px solid var(--accent)}.toast-item.warn{border-left:3px solid var(--amber)}
+@keyframes tin{from{transform:translateX(16px);opacity:0}to{transform:translateX(0);opacity:1}}
+
+.mono{font-family:var(--mono);font-size:12.5px}.text2{color:var(--text2)}.text3{color:var(--text3)}
+.ell{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:200px;display:block}
+.section-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.section-title{font-size:13.5px;font-weight:600;color:var(--text2)}
+::-webkit-scrollbar{width:5px;height:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+</style>
+</head>
+<body>
+
+<div class="breadcrumb">
+  <a href="../index.html"><i class="ti ti-snowflake"></i>Snow Hub</a>
+  <i class="ti ti-chevron-right" style="font-size:12px"></i>
+  <span>BackupMgr</span>
+</div>
+
+<div class="shell">
+<aside class="sidebar">
+  <div class="logo">
+    <div class="logo-icon"><i class="ti ti-database-backup" style="font-size:20px"></i></div>
+    <div><div class="logo-text">BackupMgr</div><div class="logo-sub">Snow · v2.0</div></div>
+  </div>
+  <nav>
+    <div class="nav-label">General</div>
+    <button class="nav-item active" onclick="nav('dashboard',this)"><i class="ti ti-layout-dashboard"></i>Dashboard</button>
+    <button class="nav-item" onclick="nav('backups',this)"><i class="ti ti-archive"></i>Imágenes<span class="nav-count" id="nc-bk">0</span></button>
+    <button class="nav-item" onclick="nav('devices',this)"><i class="ti ti-devices"></i>Dispositivos<span class="nav-count" id="nc-dv">0</span></button>
+    <div class="nav-label">Administración</div>
+    <button class="nav-item" onclick="nav('schedule',this)"><i class="ti ti-calendar-event"></i>Programación<span class="nav-count" id="nc-sc">0</span></button>
+    <button class="nav-item" onclick="nav('reports',this)"><i class="ti ti-chart-bar"></i>Reportes</button>
+    <button class="nav-item" onclick="nav('logs',this)"><i class="ti ti-list-details"></i>Registro</button>
+    <div class="nav-label">Sistema</div>
+    <button class="nav-item" onclick="nav('settings',this)"><i class="ti ti-settings"></i>Configuración</button>
+  </nav>
+  <div class="sidebar-bottom">
+    <button class="sync-btn" onclick="syncOD()">
+      <i class="ti ti-cloud-upload"></i><span>Sincronizar</span>
+      <span class="sync-status" id="syncStatus">● local</span>
+    </button>
+  </div>
+</aside>
+
+<main class="content">
+  <!-- DASHBOARD -->
+  <div class="view active" id="v-dashboard">
+    <div class="topbar">
+      <div><div class="page-title">Dashboard</div><div class="page-sub">Resumen del sistema de backups</div></div>
+      <div class="topbar-right">
+        <button class="btn btn-ghost" onclick="openModal('m-backup')"><i class="ti ti-plus"></i>Nueva imagen</button>
+        <button class="btn btn-primary" onclick="runNow()"><i class="ti ti-player-play"></i>Ejecutar ahora</button>
+      </div>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-label">Imágenes totales</div><div class="stat-val" id="s-total">0</div><div class="stat-sub">En todos los dispositivos</div></div>
+      <div class="stat-card"><div class="stat-label">Último backup</div><div class="stat-val" style="font-size:15px;padding-top:5px" id="s-last">—</div><div class="stat-sub" id="s-last-host">—</div></div>
+      <div class="stat-card"><div class="stat-label">Dispositivos activos</div><div class="stat-val" id="s-devs">0</div><div class="stat-sub">Registrados y en línea</div></div>
+      <div class="stat-card"><div class="stat-label">Espacio usado</div><div class="stat-val" id="s-space">0 TB</div><div class="stat-sub" id="s-space-sub">De total disponible</div></div>
+    </div>
+    <div class="grid2">
+      <div class="card"><div class="section-hdr"><div class="section-title">Tendencia (7 días)</div></div><canvas id="ch-trend" height="150"></canvas></div>
+      <div class="card"><div class="section-hdr"><div class="section-title">Uso por dispositivo</div></div><canvas id="ch-pie" height="150"></canvas></div>
+    </div>
+    <div class="section-hdr"><div class="section-title">Últimas imágenes</div></div>
+    <div class="card" style="padding:0"><div class="table-wrap"><table>
+      <thead><tr><th>Nombre</th><th>Equipo</th><th>Ruta destino</th><th>Tamaño</th><th>Estado</th><th>Fecha</th></tr></thead>
+      <tbody id="t-recent"></tbody>
+    </table></div></div>
+    <div style="margin-top:22px" class="section-hdr"><div class="section-title">Estado de dispositivos</div></div>
+    <div class="device-grid" id="d-dash"></div>
+  </div>
+
+  <!-- BACKUPS -->
+  <div class="view" id="v-backups">
+    <div class="topbar">
+      <div><div class="page-title">Imágenes de sistema</div><div class="page-sub">Registro completo</div></div>
+      <div class="topbar-right">
+        <input type="text" class="form-control" style="width:180px;padding:7px 11px" placeholder="Buscar..." oninput="filterBk(this.value)">
+        <select class="form-control" style="width:140px;padding:7px 11px" onchange="filterBkStatus(this.value)">
+          <option value="">Todos</option><option>Completado</option><option>En progreso</option><option>Error</option>
+        </select>
+        <button class="btn btn-ghost btn-sm" onclick="exportCSV()"><i class="ti ti-download"></i>CSV</button>
+        <button class="btn btn-primary" onclick="openModal('m-backup')"><i class="ti ti-plus"></i>Nueva</button>
+      </div>
+    </div>
+    <div class="card" style="padding:0"><div class="table-wrap"><table style="min-width:900px">
+      <thead><tr><th>Imagen</th><th>Equipo</th><th>IP</th><th>Dispositivo</th><th>Ruta completa</th><th>Tamaño</th><th>Tipo</th><th>Estado</th><th>Fecha</th><th></th></tr></thead>
+      <tbody id="t-backups"></tbody>
+    </table></div></div>
+  </div>
+
+  <!-- DEVICES -->
+  <div class="view" id="v-devices">
+    <div class="topbar">
+      <div><div class="page-title">Dispositivos</div><div class="page-sub">Almacenamientos registrados</div></div>
+      <div class="topbar-right"><button class="btn btn-primary" onclick="openModal('m-device')"><i class="ti ti-plus"></i>Agregar</button></div>
+    </div>
+    <div class="card" style="padding:0;margin-bottom:20px"><div class="table-wrap"><table style="min-width:800px">
+      <thead><tr><th>Dispositivo</th><th>Tipo</th><th>IP / Dirección</th><th>Punto de montaje</th><th>Protocolo</th><th>Capacidad</th><th>Uso</th><th>Estado</th><th></th></tr></thead>
+      <tbody id="t-devices"></tbody>
+    </table></div></div>
+    <div class="device-grid" id="d-cards"></div>
+  </div>
+
+  <!-- SCHEDULE -->
+  <div class="view" id="v-schedule">
+    <div class="topbar">
+      <div><div class="page-title">Programación</div><div class="page-sub">Tareas automáticas de backup</div></div>
+      <div class="topbar-right"><button class="btn btn-primary" onclick="openModal('m-schedule')"><i class="ti ti-plus"></i>Nueva tarea</button></div>
+    </div>
+    <div class="card" style="padding:0"><div class="table-wrap"><table>
+      <thead><tr><th>Tarea</th><th>Origen</th><th>Dispositivo</th><th>Frecuencia</th><th>Hora</th><th>Retención</th><th>Próxima ejecución</th><th>Estado</th><th></th></tr></thead>
+      <tbody id="t-schedule"></tbody>
+    </table></div></div>
+  </div>
+
+  <!-- REPORTS -->
+  <div class="view" id="v-reports">
+    <div class="topbar"><div><div class="page-title">Reportes</div><div class="page-sub">Análisis del sistema</div></div></div>
+    <div class="stats-grid" style="grid-template-columns:repeat(4,1fr)">
+      <div class="stat-card"><div class="stat-label">Completados</div><div class="stat-val" style="color:var(--green)" id="r-ok">0</div></div>
+      <div class="stat-card"><div class="stat-label">En progreso</div><div class="stat-val" style="color:var(--accent)" id="r-prog">0</div></div>
+      <div class="stat-card"><div class="stat-label">Con error</div><div class="stat-val" style="color:var(--red)" id="r-err">0</div></div>
+      <div class="stat-card"><div class="stat-label">Tasa de éxito</div><div class="stat-val" id="r-rate">0%</div></div>
+    </div>
+    <div class="grid2">
+      <div class="card"><div class="section-hdr"><div class="section-title">Por tipo de imagen</div></div><canvas id="ch-type" height="160"></canvas></div>
+      <div class="card"><div class="section-hdr"><div class="section-title">Espacio por dispositivo</div></div><canvas id="ch-dev" height="160"></canvas></div>
+    </div>
+  </div>
+
+  <!-- LOGS -->
+  <div class="view" id="v-logs">
+    <div class="topbar">
+      <div><div class="page-title">Registro</div><div class="page-sub">Bitácora del sistema</div></div>
+      <div class="topbar-right"><button class="btn btn-danger btn-sm" onclick="clearLogs()"><i class="ti ti-trash"></i>Limpiar</button></div>
+    </div>
+    <div class="card" style="padding:0"><div id="log-list"></div></div>
+  </div>
+
+  <!-- SETTINGS -->
+  <div class="view" id="v-settings">
+    <div class="topbar"><div><div class="page-title">Configuración</div><div class="page-sub">Sistema y sincronización</div></div></div>
+    <div class="grid2">
+      <div class="card">
+        <div class="section-title" style="margin-bottom:16px">General</div>
+        <div class="form-group"><label class="form-label">Nombre de la organización</label><input class="form-control" id="cfg-org" oninput="saveSetting('org',this.value)"></div>
+        <div class="form-group"><label class="form-label">Directorio base</label><input class="form-control" id="cfg-base" oninput="saveSetting('base',this.value)"></div>
+        <div class="form-group"><label class="form-label">Retención por defecto (días)</label><input class="form-control" type="number" id="cfg-ret" oninput="saveSetting('ret',this.value)" style="max-width:140px"></div>
+        <div class="form-group"><label class="form-label">Email notificaciones</label><input class="form-control" id="cfg-email" oninput="saveSetting('email',this.value)"></div>
+        <button class="btn btn-primary" onclick="showToast('Configuración guardada','ok')"><i class="ti ti-check"></i>Guardar</button>
+      </div>
+      <div class="card">
+        <div class="section-title" style="margin-bottom:14px">OneDrive — Sincronización</div>
+        <div class="od-status"><div class="od-dot" id="odDot" style="background:var(--text3)"></div>
+          <div><div style="font-size:13px;font-weight:500" id="odMsg">No conectado</div><div style="font-size:11px;color:var(--text3);margin-top:2px" id="odSub">El token se comparte con Snow Hub</div></div>
+        </div>
+        <div class="hint" style="margin-bottom:14px;padding:10px 12px;background:var(--bg3);border-radius:var(--radius-sm);border:1px solid var(--border)">
+          <i class="ti ti-info-circle" style="font-size:14px;vertical-align:-2px;margin-right:4px;color:var(--accent)"></i>
+          La autenticación de OneDrive se gestiona desde <a href="../index.html" style="color:var(--accent)">Snow Hub</a>. Conecta tu cuenta ahí y BackupMgr la usará automáticamente.
+        </div>
+        <button class="btn btn-ghost" onclick="syncOD()" style="width:100%;justify-content:center;margin-bottom:8px"><i class="ti ti-cloud-upload"></i>Sincronizar ahora</button>
+        <button class="btn btn-ghost" onclick="loadOD()" style="width:100%;justify-content:center"><i class="ti ti-cloud-download"></i>Cargar desde OneDrive</button>
+        <div style="margin-top:12px;font-size:11px;color:var(--text3);line-height:1.7">
+          Los datos se guardan en <code style="background:var(--bg3);padding:1px 5px;border-radius:4px;font-family:var(--mono)">/Apps/BackupMgr/data.json</code>
+        </div>
+      </div>
+      <div class="card">
+        <div class="section-title" style="margin-bottom:14px">Datos locales</div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <button class="btn btn-ghost" onclick="exportJSON()" style="justify-content:center"><i class="ti ti-download"></i>Exportar JSON</button>
+          <button class="btn btn-ghost" onclick="document.getElementById('importFile').click()" style="justify-content:center"><i class="ti ti-upload"></i>Importar JSON</button>
+          <input type="file" id="importFile" accept=".json" style="display:none" onchange="importJSON(event)">
+          <button class="btn btn-danger" onclick="clearAll()" style="justify-content:center">Borrar todos los datos</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+</div>
+
+<!-- MODALS -->
+<div class="modal-overlay" id="m-backup"><div class="modal">
+  <div class="modal-title"><span>Registrar imagen</span><button class="modal-close" onclick="closeModal('m-backup')"><i class="ti ti-x"></i></button></div>
+  <div class="form-group"><label class="form-label">Nombre de la imagen</label><input class="form-control" id="bk-name" placeholder="WIN-SRV-2025-06-14.wim"></div>
+  <div class="form-row">
+    <div class="form-group"><label class="form-label">Equipo origen</label><input class="form-control" id="bk-host" placeholder="WIN-SRV-01"></div>
+    <div class="form-group"><label class="form-label">IP del equipo</label><input class="form-control" id="bk-ip" placeholder="192.168.1.10"></div>
+  </div>
+  <div class="form-group"><label class="form-label">Dispositivo destino</label><select class="form-control" id="bk-dev"></select></div>
+  <div class="form-group"><label class="form-label">Ruta destino completa</label><input class="form-control" id="bk-path" placeholder="//192.168.1.100/backups/servidores/"></div>
+  <div class="form-row">
+    <div class="form-group"><label class="form-label">Tamaño (GB)</label><input class="form-control" type="number" id="bk-size" placeholder="45"></div>
+    <div class="form-group"><label class="form-label">Tipo</label>
+      <select class="form-control" id="bk-type"><option>Imagen completa</option><option>Imagen incremental</option><option>Imagen diferencial</option><option>Snapshot</option></select>
+    </div>
+  </div>
+  <div class="form-group"><label class="form-label">Notas</label><textarea class="form-control" id="bk-notes" rows="2" placeholder="Observaciones..."></textarea></div>
+  <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:6px">
+    <button class="btn btn-ghost" onclick="closeModal('m-backup')">Cancelar</button>
+    <button class="btn btn-primary" onclick="addBackup()"><i class="ti ti-check"></i>Registrar</button>
+  </div>
+</div></div>
+
+<div class="modal-overlay" id="m-device"><div class="modal">
+  <div class="modal-title">Agregar dispositivo<button class="modal-close" onclick="closeModal('m-device')"><i class="ti ti-x"></i></button></div>
+  <div class="form-row">
+    <div class="form-group"><label class="form-label">Nombre</label><input class="form-control" id="dv-name" placeholder="NAS-Secundario"></div>
+    <div class="form-group"><label class="form-label">Tipo</label><select class="form-control" id="dv-type"><option>NAS</option><option>SAN</option><option>HDD Externo</option><option>Cloud S3</option><option>Tape</option><option>SMB/CIFS</option></select></div>
+  </div>
+  <div class="form-row">
+    <div class="form-group"><label class="form-label">IP / Dirección</label><input class="form-control" id="dv-ip" placeholder="192.168.1.101"></div>
+    <div class="form-group"><label class="form-label">Puerto</label><input class="form-control" id="dv-port" placeholder="445"></div>
+  </div>
+  <div class="form-group"><label class="form-label">Punto de montaje / Ruta base</label><input class="form-control" id="dv-path" placeholder="//192.168.1.101/backups"></div>
+  <div class="form-row">
+    <div class="form-group"><label class="form-label">Protocolo</label><select class="form-control" id="dv-proto"><option>SMB</option><option>NFS</option><option>iSCSI</option><option>HTTPS/S3</option><option>USB</option></select></div>
+    <div class="form-group"><label class="form-label">Capacidad (TB)</label><input class="form-control" type="number" id="dv-cap" placeholder="4"></div>
+  </div>
+  <div class="form-row">
+    <div class="form-group"><label class="form-label">Usuario</label><input class="form-control" id="dv-user" placeholder="backup_user"></div>
+    <div class="form-group"><label class="form-label">Directorio raíz</label><input class="form-control" id="dv-bkdir" placeholder="/backups/sistemas"></div>
+  </div>
+  <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:6px">
+    <button class="btn btn-ghost" onclick="closeModal('m-device')">Cancelar</button>
+    <button class="btn btn-primary" onclick="addDevice()"><i class="ti ti-check"></i>Guardar</button>
+  </div>
+</div></div>
+
+<div class="modal-overlay" id="m-schedule"><div class="modal">
+  <div class="modal-title">Nueva tarea programada<button class="modal-close" onclick="closeModal('m-schedule')"><i class="ti ti-x"></i></button></div>
+  <div class="form-group"><label class="form-label">Nombre</label><input class="form-control" id="sc-name" placeholder="BKP-SEMANAL-SERVIDORES"></div>
+  <div class="form-row">
+    <div class="form-group"><label class="form-label">Equipo / Grupo origen</label><input class="form-control" id="sc-host" placeholder="hostname o 192.168.1.0/24"></div>
+    <div class="form-group"><label class="form-label">Dispositivo destino</label><select class="form-control" id="sc-dev"></select></div>
+  </div>
+  <div class="form-row">
+    <div class="form-group"><label class="form-label">Frecuencia</label><select class="form-control" id="sc-freq"><option>Diaria</option><option>Semanal</option><option>Quincenal</option><option>Mensual</option></select></div>
+    <div class="form-group"><label class="form-label">Hora de inicio</label><input class="form-control" type="time" id="sc-time" value="02:00"></div>
+  </div>
+  <div class="form-row">
+    <div class="form-group"><label class="form-label">Retención (días)</label><input class="form-control" type="number" id="sc-ret" placeholder="30"></div>
+    <div class="form-group"><label class="form-label">Tipo</label><select class="form-control" id="sc-type"><option>Imagen completa</option><option>Imagen incremental</option><option>Snapshot</option></select></div>
+  </div>
+  <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:6px">
+    <button class="btn btn-ghost" onclick="closeModal('m-schedule')">Cancelar</button>
+    <button class="btn btn-primary" onclick="addSchedule()"><i class="ti ti-check"></i>Guardar</button>
+  </div>
+</div></div>
+
+<div id="toast"></div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+const DB_KEY='snow_bkmgr_db';
+let db={settings:{org:'Mi Empresa',base:'//nas-principal/backups',ret:30,email:''},devices:[{id:'d1',name:'NAS-Principal',type:'NAS',ip:'192.168.1.100',port:'445',path:'//192.168.1.100/backups',proto:'SMB',cap:4,used:2.1,user:'backup_admin',bkdir:'/backups/sistemas',status:'Activo'},{id:'d2',name:'SAN-Storage',type:'SAN',ip:'10.0.0.50',port:'3260',path:'//10.0.0.50/san01',proto:'iSCSI',cap:2,used:0.9,user:'san_user',bkdir:'/san01/sistemas',status:'Activo'},{id:'d3',name:'HDD-Externo-01',type:'HDD Externo',ip:'—',port:'—',path:'/mnt/usb/hdd01',proto:'USB',cap:1,used:0.4,user:'—',bkdir:'/mnt/usb/hdd01',status:'Activo'},{id:'d4',name:'Cloud-S3',type:'Cloud S3',ip:'s3.amazonaws.com',port:'443',path:'s3://bkp-empresa/',proto:'HTTPS/S3',cap:99,used:0.2,user:'aws_key',bkdir:'s3://bkp-empresa/',status:'Activo'}],backups:[{id:'b1',name:'WIN-SRV-2025-06-14.wim',host:'WIN-SRV-01',ip:'192.168.1.10',device:'NAS-Principal',path:'//192.168.1.100/backups/servidores/WIN-SRV-01/',size:42,type:'Imagen completa',status:'Completado',date:'2025-06-14 02:15',notes:''},{id:'b2',name:'LINUX-DB-2025-06-13.img',host:'DB-SERVER',ip:'192.168.1.20',device:'SAN-Storage',path:'//10.0.0.50/san01/db/DB-SERVER/',size:78,type:'Imagen completa',status:'Completado',date:'2025-06-13 03:00',notes:'Base de datos principal'},{id:'b3',name:'ESX-SNAP-0614.vmdk',host:'ESX-HOST-01',ip:'10.0.0.10',device:'SAN-Storage',path:'//10.0.0.50/san01/vmware/',size:120,type:'Snapshot',status:'En progreso',date:'2025-06-14 06:00',notes:'VMware vSphere'}],schedules:[{id:'s1',name:'BKP-DIARIO-SERVIDORES',host:'Grupo: Servidores',device:'NAS-Principal',freq:'Diaria',time:'02:00',ret:30,next:'2025-06-15 02:00',type:'Imagen incremental',status:'Activo'},{id:'s2',name:'BKP-SEMANAL-VMs',host:'ESX-HOST-01',device:'SAN-Storage',freq:'Semanal',time:'03:00',ret:60,next:'2025-06-18 03:00',type:'Snapshot',status:'Activo'}],logs:[{time:'2025-06-14 06:00',icon:'ti-player-play',color:'#5b8af0',msg:'<strong>Inicio</strong> — Snapshot ESX-HOST-01 hacia SAN-Storage'},{time:'2025-06-14 02:15',icon:'ti-check',color:'#3ecf8e',msg:'<strong>Completado</strong> — WIN-SRV-2025-06-14.wim → NAS-Principal (42 GB)'}]};
+let odToken=null;let charts={};let autoSyncTimer=null;
+
+function save(){localStorage.setItem(DB_KEY,JSON.stringify(db));}
+function load(){const r=localStorage.getItem(DB_KEY);if(r){try{db=JSON.parse(r);}catch(e){}}}
+function uid(){return Math.random().toString(36).slice(2,9);}
+function now(){return new Date().toISOString().slice(0,16).replace('T',' ');}
+function sb(s){const m={'Completado':'bg','En progreso':'bb','Error':'br','Activo':'bg','Inactivo':'bgr','Advertencia':'ba'};return`<span class="badge ${m[s]||'bgr'}">${s}</span>`;}
+function devIcon(t){return{NAS:'ti-server',SAN:'ti-device-storage','HDD Externo':'ti-device-usb','Cloud S3':'ti-cloud',Tape:'ti-database','SMB/CIFS':'ti-network'}[t]||'ti-server';}
+function fmtSize(gb){return gb?gb+' GB':'—';}
+function totalUsed(){return db.devices.filter(d=>d.cap<90).reduce((a,d)=>a+d.used,0).toFixed(1);}
+function totalCap(){return db.devices.filter(d=>d.cap<90).reduce((a,d)=>a+d.cap,0);}
+function updateCounts(){document.getElementById('nc-bk').textContent=db.backups.length;document.getElementById('nc-dv').textContent=db.devices.length;document.getElementById('nc-sc').textContent=db.schedules.length;}
+function addLog(icon,color,msg){db.logs.unshift({time:now(),icon,color,msg});save();}
+function refreshDevSels(){const opts=db.devices.map(d=>`<option>${d.name}</option>`).join('');['bk-dev','sc-dev'].forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML=opts;});}
+
+function nav(id,el){document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));document.getElementById('v-'+id).classList.add('active');el.classList.add('active');const renders={dashboard:renderDashboard,backups:()=>renderBackups(db.backups),devices:renderDevices,schedule:renderSchedule,reports:renderReports,logs:renderLogs,settings:applySettings};if(renders[id])renders[id]();if(id==='dashboard'||id==='reports')setTimeout(initCharts,60);}
+
+function renderDashboard(){document.getElementById('s-total').textContent=db.backups.length;document.getElementById('s-devs').textContent=db.devices.filter(d=>d.status==='Activo').length;const last=db.backups[0];document.getElementById('s-last').textContent=last?last.date.slice(11):'—';document.getElementById('s-last-host').textContent=last?last.host:'—';document.getElementById('s-space').textContent=totalUsed()+' TB';document.getElementById('s-space-sub').textContent=`De ${totalCap()} TB disponibles`;document.getElementById('t-recent').innerHTML=db.backups.slice(0,5).map(b=>`<tr><td class="mono">${b.name}</td><td>${b.host}</td><td><span class="mono ell" title="${b.path}">${b.path}</span></td><td>${fmtSize(b.size)}</td><td>${sb(b.status)}</td><td style="font-size:12px;color:var(--text3)">${b.date}</td></tr>`).join('');document.getElementById('d-dash').innerHTML=db.devices.map(renderDevCard).join('');updateCounts();}
+
+function renderDevCard(d){const pct=d.cap<90?Math.min(100,Math.round((d.used/d.cap)*100)):0;const cls=pct>85?'danger':pct>65?'warn':'';return`<div class="device-card"><div style="display:flex;align-items:center;gap:10px;margin-bottom:10px"><div class="dev-icon"><i class="ti ${devIcon(d.type)}"></i></div><div><div style="font-weight:500;font-size:13.5px">${d.name}</div><div style="font-size:11px;color:var(--text3)">${d.type} · ${d.proto}</div></div></div><div class="mono text3" style="font-size:11.5px;margin-bottom:8px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${d.path}</div>${d.cap<90?`<div class="bar-bg"><div class="bar-fill ${cls}" style="width:${pct}%"></div></div><div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text3);margin-top:4px"><span>${d.used} TB</span><span>${pct}%</span></div>`:'<div style="font-size:11px;color:var(--text3)">Cloud</div>'}</div>`;}
+
+function initCharts(){const tc=getComputedStyle(document.documentElement).getPropertyValue('--text3').trim();const grid='rgba(255,255,255,0.05)';const base={responsive:true,plugins:{legend:{labels:{color:tc,font:{size:11}}}},scales:{x:{grid:{color:grid},ticks:{color:tc}},y:{grid:{color:grid},ticks:{color:tc},beginAtZero:true}}};if(charts.trend)charts.trend.destroy();const ct=document.getElementById('ch-trend');if(ct)charts.trend=new Chart(ct,{type:'bar',data:{labels:['08/06','09/06','10/06','11/06','12/06','13/06','14/06'],datasets:[{label:'Completados',data:[2,3,1,4,2,3,3],backgroundColor:'rgba(62,207,142,0.25)',borderColor:'#3ecf8e',borderWidth:1.5,borderRadius:4},{label:'Errores',data:[0,0,1,0,0,1,0],backgroundColor:'rgba(240,91,91,0.2)',borderColor:'#f05b5b',borderWidth:1.5,borderRadius:4}]},options:{...base}});if(charts.pie)charts.pie.destroy();const cp=document.getElementById('ch-pie');const dvF=db.devices.filter(d=>d.cap<90);if(cp)charts.pie=new Chart(cp,{type:'doughnut',data:{labels:dvF.map(d=>d.name),datasets:[{data:dvF.map(d=>d.used),backgroundColor:['rgba(91,138,240,0.7)','rgba(62,207,142,0.7)','rgba(240,185,62,0.7)','rgba(240,91,91,0.7)'],borderColor:'var(--bg2)',borderWidth:2}]},options:{responsive:true,plugins:{legend:{position:'right',labels:{color:tc,font:{size:11},boxWidth:12}}}}});if(charts.type)charts.type.destroy();const cty=document.getElementById('ch-type');const types=['Imagen completa','Imagen incremental','Imagen diferencial','Snapshot'];if(cty)charts.type=new Chart(cty,{type:'bar',data:{labels:types,datasets:[{label:'Cantidad',data:types.map(t=>db.backups.filter(b=>b.type===t).length),backgroundColor:['rgba(91,138,240,0.7)','rgba(62,207,142,0.7)','rgba(240,185,62,0.7)','rgba(62,207,216,0.7)'],borderRadius:4}]},options:{...base,plugins:{legend:{display:false}}}});if(charts.dev)charts.dev.destroy();const cd=document.getElementById('ch-dev');if(cd)charts.dev=new Chart(cd,{type:'bar',data:{labels:dvF.map(d=>d.name),datasets:[{label:'Usado (TB)',data:dvF.map(d=>d.used),backgroundColor:'rgba(91,138,240,0.7)',borderRadius:4,stack:'s'},{label:'Libre (TB)',data:dvF.map(d=>+(d.cap-d.used).toFixed(2)),backgroundColor:'rgba(62,207,142,0.25)',borderRadius:4,stack:'s'}]},options:{...base,scales:{x:{grid:{color:grid},ticks:{color:tc},stacked:true},y:{grid:{color:grid},ticks:{color:tc},stacked:true,beginAtZero:true}}}});}
+
+function renderBackups(list){document.getElementById('t-backups').innerHTML=list.map(b=>`<tr><td><span class="mono" style="font-size:12px">${b.name}</span>${b.notes?`<div style="font-size:11px;color:var(--text3)">${b.notes}</div>`:''}</td><td>${b.host}</td><td class="mono text3" style="font-size:12px">${b.ip}</td><td>${b.device}</td><td><span class="mono text3 ell" style="font-size:11.5px" title="${b.path}">${b.path}</span></td><td>${fmtSize(b.size)}</td><td style="font-size:12px;color:var(--text3)">${b.type}</td><td>${sb(b.status)}</td><td style="font-size:12px;color:var(--text3)">${b.date}</td><td><button class="action-btn del" onclick="delBackup('${b.id}')"><i class="ti ti-trash"></i></button></td></tr>`).join('');}
+function filterBk(q){renderBackups(db.backups.filter(b=>b.name.toLowerCase().includes(q.toLowerCase())||b.host.toLowerCase().includes(q.toLowerCase())||b.path.toLowerCase().includes(q.toLowerCase())));}
+function filterBkStatus(s){renderBackups(s?db.backups.filter(b=>b.status===s):db.backups);}
+
+function renderDevices(){document.getElementById('t-devices').innerHTML=db.devices.map(d=>{const pct=d.cap<90?Math.min(100,Math.round((d.used/d.cap)*100)):0;return`<tr><td><div style="display:flex;align-items:center;gap:8px"><i class="ti ${devIcon(d.type)}" style="font-size:18px;color:var(--accent)"></i><strong>${d.name}</strong></div></td><td>${d.type}</td><td class="mono text3" style="font-size:12px">${d.ip}${d.port!=='—'?':'+d.port:''}</td><td class="mono text3" style="font-size:11.5px">${d.path}</td><td>${d.proto}</td><td>${d.cap<90?d.cap+' TB':'Ilimitado'}</td><td>${d.cap<90?`<div class="bar-bg" style="width:90px;display:inline-block;vertical-align:middle;margin-right:6px"><div class="bar-fill ${pct>85?'danger':pct>65?'warn':''}" style="width:${pct}%"></div></div><span style="font-size:11px">${d.used} TB</span>`:'—'}</td><td>${sb(d.status)}</td><td><button class="action-btn del" onclick="delDevice('${d.id}')"><i class="ti ti-trash"></i></button></td></tr>`;}).join('');document.getElementById('d-cards').innerHTML=db.devices.map(renderDevCard).join('');}
+
+function renderSchedule(){document.getElementById('t-schedule').innerHTML=db.schedules.map(s=>`<tr><td><strong>${s.name}</strong></td><td>${s.host}</td><td>${s.device}</td><td>${s.freq}</td><td class="mono text3" style="font-size:12px">${s.time}</td><td>${s.ret} días</td><td style="font-size:12px;color:var(--text3)">${s.next}</td><td>${sb(s.status)}</td><td><button class="action-btn del" onclick="delSchedule('${s.id}')"><i class="ti ti-trash"></i></button></td></tr>`).join('');}
+
+function renderReports(){const ok=db.backups.filter(b=>b.status==='Completado').length;const prog=db.backups.filter(b=>b.status==='En progreso').length;const err=db.backups.filter(b=>b.status==='Error').length;document.getElementById('r-ok').textContent=ok;document.getElementById('r-prog').textContent=prog;document.getElementById('r-err').textContent=err;document.getElementById('r-rate').textContent=db.backups.length?Math.round((ok/db.backups.length)*100)+'%':'0%';}
+
+function renderLogs(){document.getElementById('log-list').innerHTML=db.logs.length?db.logs.map(l=>`<div class="log-entry"><span class="log-time">${l.time}</span><i class="ti ${l.icon}" style="color:${l.color};font-size:16px;margin-top:1px"></i><span class="log-msg">${l.msg}</span></div>`).join(''):'<div style="padding:28px;text-align:center;color:var(--text3)">Sin registros</div>';}
+function clearLogs(){db.logs=[];save();renderLogs();showToast('Registro limpiado','info');}
+
+function applySettings(){const s=db.settings;document.getElementById('cfg-org').value=s.org||'';document.getElementById('cfg-base').value=s.base||'';document.getElementById('cfg-ret').value=s.ret||30;document.getElementById('cfg-email').value=s.email||'';updateOdUI(!!odToken);}
+function saveSetting(k,v){db.settings[k]=v;save();}
+
+function addBackup(){const name=document.getElementById('bk-name').value.trim()||'IMG-'+Date.now()+'.wim';const host=document.getElementById('bk-host').value.trim()||'HOST';const ip=document.getElementById('bk-ip').value.trim()||'0.0.0.0';const device=document.getElementById('bk-dev').value;const path=document.getElementById('bk-path').value.trim()||'//ruta/';const size=parseInt(document.getElementById('bk-size').value)||0;const type=document.getElementById('bk-type').value;const notes=document.getElementById('bk-notes').value.trim();db.backups.unshift({id:uid(),name,host,ip,device,path,size,type,status:'Completado',date:now(),notes});addLog('ti-check','#3ecf8e',`<strong>Registrado</strong> — ${name} → ${device}`);closeModal('m-backup');renderBackups(db.backups);renderDashboard();autoSync();showToast('Imagen registrada','ok');}
+function addDevice(){const name=document.getElementById('dv-name').value.trim()||'DEVICE';const type=document.getElementById('dv-type').value;const ip=document.getElementById('dv-ip').value.trim()||'—';const port=document.getElementById('dv-port').value.trim()||'—';const path=document.getElementById('dv-path').value.trim()||'/mnt/nuevo';const proto=document.getElementById('dv-proto').value;const cap=parseFloat(document.getElementById('dv-cap').value)||1;const user=document.getElementById('dv-user').value.trim()||'—';const bkdir=document.getElementById('dv-bkdir').value.trim()||path;db.devices.push({id:uid(),name,type,ip,port,path,proto,cap,used:0,user,bkdir,status:'Activo'});addLog('ti-plus','#5b8af0',`<strong>Dispositivo agregado</strong> — ${name}`);closeModal('m-device');renderDevices();updateCounts();refreshDevSels();autoSync();showToast('Dispositivo registrado','ok');}
+function addSchedule(){const name=document.getElementById('sc-name').value.trim()||'TAREA';const host=document.getElementById('sc-host').value.trim()||'Sin especificar';const device=document.getElementById('sc-dev').value;const freq=document.getElementById('sc-freq').value;const time=document.getElementById('sc-time').value;const ret=parseInt(document.getElementById('sc-ret').value)||30;const type=document.getElementById('sc-type').value;db.schedules.push({id:uid(),name,host,device,freq,time,ret,next:'2025-06-15 '+time,type,status:'Activo'});closeModal('m-schedule');renderSchedule();updateCounts();autoSync();showToast('Tarea guardada','ok');}
+function delBackup(id){db.backups=db.backups.filter(b=>b.id!==id);save();renderBackups(db.backups);renderDashboard();autoSync();showToast('Imagen eliminada','warn');}
+function delDevice(id){db.devices=db.devices.filter(d=>d.id!==id);save();renderDevices();updateCounts();autoSync();showToast('Dispositivo eliminado','warn');}
+function delSchedule(id){db.schedules=db.schedules.filter(s=>s.id!==id);save();renderSchedule();updateCounts();autoSync();showToast('Tarea eliminada','warn');}
+function runNow(){const hosts=['WIN-SRV-01','DB-SERVER','WEB-SRV-01','APP-SERVER'];const host=hosts[Math.floor(Math.random()*hosts.length)];const dev=db.devices[Math.floor(Math.random()*db.devices.length)];const name=host+'-'+now().slice(0,10)+'-manual.wim';const size=Math.floor(Math.random()*80+10);db.backups.unshift({id:uid(),name,host,ip:'192.168.1.'+Math.floor(Math.random()*50+5),device:dev.name,path:dev.path+'/'+host+'/',size,type:'Imagen completa',status:'Completado',date:now(),notes:'Backup manual'});addLog('ti-player-play','#5b8af0',`<strong>Backup manual</strong> — ${name} → ${dev.name}`);renderDashboard();autoSync();showToast('Backup ejecutado','ok');setTimeout(initCharts,60);}
+
+function openModal(id){refreshDevSels();document.getElementById(id).classList.add('open');}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.modal-overlay.open').forEach(m=>m.classList.remove('open'));});
+document.querySelectorAll('.modal-overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');}));
+
+function showToast(msg,type='info'){const icons={ok:'ti-check',err:'ti-x',warn:'ti-alert-triangle',info:'ti-info-circle'};const t=document.createElement('div');t.className='toast-item '+type;t.innerHTML=`<i class="ti ${icons[type]}" style="font-size:15px"></i>${msg}`;document.getElementById('toast').appendChild(t);setTimeout(()=>t.remove(),3000);}
+
+// OneDrive — uses shared snow_od_token
+function initOD(){const stored=localStorage.getItem('snow_od_token');if(stored){odToken=stored;updateOdUI(true);}}
+function updateOdUI(connected){const dot=document.getElementById('odDot');const msg=document.getElementById('odMsg');const sub=document.getElementById('odSub');const ss=document.getElementById('syncStatus');if(connected){dot.style.background='var(--green)';msg.textContent='Conectado a OneDrive';sub.textContent='Token compartido con Snow Hub';ss.textContent='● sync';ss.className='sync-status ok';}else{dot.style.background='var(--text3)';msg.textContent='No conectado';sub.textContent='Conecta desde Snow Hub';ss.textContent='● local';ss.className='sync-status';}}
+
+async function syncOD(){if(!odToken){showToast('Conecta OneDrive desde Snow Hub','info');return;}const ss=document.getElementById('syncStatus');ss.textContent='● sync…';ss.className='sync-status syncing';try{const res=await fetch('https://graph.microsoft.com/v1.0/me/drive/root:/Apps/BackupMgr/data.json:/content',{method:'PUT',headers:{'Authorization':'Bearer '+odToken,'Content-Type':'application/json'},body:JSON.stringify(db)});if(res.ok){ss.textContent='● sync';ss.className='sync-status ok';showToast('Sincronizado en OneDrive','ok');addLog('ti-cloud-upload','#3ecf8e','<strong>Sincronizado</strong> — datos guardados en /Apps/BackupMgr/data.json');}else if(res.status===401){odToken=null;localStorage.removeItem('snow_od_token');updateOdUI(false);showToast('Sesión expirada — reconecta desde Snow Hub','err');}else{ss.textContent='● error';ss.className='sync-status err';showToast('Error HTTP '+res.status,'err');}}catch(e){ss.textContent='● error';ss.className='sync-status err';showToast('Error de red','err');}}
+
+async function loadOD(){if(!odToken){showToast('Conecta OneDrive desde Snow Hub','info');return;}try{const res=await fetch('https://graph.microsoft.com/v1.0/me/drive/root:/Apps/BackupMgr/data.json:/content',{headers:{'Authorization':'Bearer '+odToken}});if(res.ok){const data=await res.json();db=data;save();renderDashboard();applySettings();showToast('Datos cargados desde OneDrive','ok');}else if(res.status===404){showToast('Sin datos en OneDrive aún','warn');}else{showToast('Error HTTP '+res.status,'err');}}catch(e){showToast('Error de red','err');}}
+
+function autoSync(){if(!odToken)return;clearTimeout(autoSyncTimer);autoSyncTimer=setTimeout(syncOD,3000);}
+function exportJSON(){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(db,null,2)],{type:'application/json'}));a.download='backupmgr-'+now().slice(0,10)+'.json';a.click();showToast('JSON exportado','ok');}
+function importJSON(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{try{db=JSON.parse(ev.target.result);save();renderDashboard();applySettings();showToast('Datos importados','ok');}catch{showToast('Archivo inválido','err');}};r.readAsText(f);}
+function exportCSV(){const h='ID,Nombre,Equipo,IP,Dispositivo,Ruta,Tamaño(GB),Tipo,Estado,Fecha';const rows=db.backups.map(b=>[b.id,b.name,b.host,b.ip,b.device,b.path,b.size,b.type,b.status,b.date].join(','));const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([[h,...rows].join('\n')],{type:'text/csv'}));a.download='backups-'+now().slice(0,10)+'.csv';a.click();showToast('CSV exportado','ok');}
+function clearAll(){if(!confirm('¿Borrar todos los datos locales?'))return;db.backups=[];db.schedules=[];db.logs=[];save();renderDashboard();showToast('Datos borrados','warn');}
+
+load();initOD();renderDashboard();applySettings();refreshDevSels();updateCounts();setTimeout(initCharts,60);
+</script>
+</body>
+</html>
