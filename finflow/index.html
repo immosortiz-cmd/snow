@@ -28,8 +28,8 @@ a{color:var(--accent);text-decoration:none}
 
 /* LAYOUT */
 .shell{display:flex;min-height:100vh}
-.sidebar{width:240px;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;top:37px;left:0;height:calc(100vh - 37px);z-index:100;transition:transform .3s}
-.content{margin-left:240px;flex:1;min-height:calc(100vh - 37px);padding:28px}
+.sidebar{width:240px;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;top:38px;left:0;height:calc(100vh - 38px);z-index:100;transition:transform .3s}
+.content{margin-left:240px;flex:1;min-height:calc(100vh - 38px);padding:28px}
 .logo{padding:24px 20px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
 .logo-icon{width:36px;height:36px;background:var(--accent);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
 .logo-text{font-size:18px;font-weight:600;letter-spacing:-.3px}
@@ -240,8 +240,8 @@ select.form-control{cursor:pointer}
 (function(){
   try{
     var cfg=JSON.parse(localStorage.getItem('snow_cfg')||'{}');
-    var theme=cfg.theme||'dark';
-    var dark=theme==='auto'?window.matchMedia('(prefers-color-scheme:dark)').matches:theme==='dark';
+    var t=cfg.theme||'dark';
+    var dark=t==='auto'?window.matchMedia('(prefers-color-scheme:dark)').matches:t==='dark';
     var r=document.documentElement;
     if(!dark){
       r.style.setProperty('--bg','#f5f6fa');
@@ -254,56 +254,16 @@ select.form-control{cursor:pointer}
       r.style.setProperty('--text2','#5a6080');
       r.style.setProperty('--text3','#9aa0b8');
     }
-    var accents={blue:'#5b8af0',green:'#3ecf8e',purple:'#a07ef0',teal:'#3ecfd8',orange:'#f0833e'};
-    var a=accents[cfg.accent||'blue']||'#5b8af0';
+    var ac={blue:'#5b8af0',green:'#3ecf8e',purple:'#a07ef0',teal:'#3ecfd8',orange:'#f0833e'};
+    var a=ac[cfg.accent||'blue']||'#5b8af0';
     r.style.setProperty('--accent',a);
     r.style.setProperty('--accent2',a);
-    if(!cfg.animations) r.style.setProperty('--transition','none');
   }catch(e){}
 })();
 </script>
-<div id="snow-breadcrumb" style="background:var(--bg2,#161920);border-bottom:1px solid var(--border,#2a2d3e);padding:7px 18px;display:flex;align-items:center;gap:8px;position:sticky;top:0;z-index:999;transition:background .25s">
-  <a href="../index.html" style="display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border-radius:8px;border:1px solid var(--border,#2a2d3e);background:var(--bg3,#1e2130);color:var(--text2,#9aa0b8);text-decoration:none;font-size:12.5px;font-family:var(--font,-apple-system,sans-serif);font-weight:500;transition:all .15s" onmouseover="this.style.borderColor='var(--accent,#5b8af0)';this.style.color='var(--accent,#5b8af0)'" onmouseout="this.style.borderColor='var(--border,#2a2d3e)';this.style.color='var(--text2,#9aa0b8)'">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:13px;height:13px"><polyline points="15 18 9 12 15 6"/></svg>
-    Snow Hub
-  </a>
-  <span style="color:var(--text3,#5c6080);font-size:12px">/</span>
-  <span style="color:var(--text3,#5c6080);font-size:12.5px">FinFlow</span>
-</div>
-
-<script>
-(function(){
-  try{
-    var cfg=JSON.parse(localStorage.getItem('snow_cfg')||'{}');
-    var theme=cfg.theme||'dark';
-    var dark=theme==='auto'?window.matchMedia('(prefers-color-scheme:dark)').matches:theme==='dark';
-    var r=document.documentElement;
-    if(!dark){
-      r.style.setProperty('--bg','#f5f6fa');
-      r.style.setProperty('--bg2','#ffffff');
-      r.style.setProperty('--bg3','#eef0f6');
-      r.style.setProperty('--bg4','#e4e7f0');
-      r.style.setProperty('--border','#dde0ec');
-      r.style.setProperty('--border2','#c8ccdd');
-      r.style.setProperty('--text','#1a1d2e');
-      r.style.setProperty('--text2','#5a6080');
-      r.style.setProperty('--text3','#9aa0b8');
-    }
-    var accents={blue:'#5b8af0',green:'#3ecf8e',purple:'#a07ef0',teal:'#3ecfd8',orange:'#f0833e'};
-    var a=accents[cfg.accent||'blue']||'#5b8af0';
-    r.style.setProperty('--accent',a);
-    r.style.setProperty('--accent2',a);
-    if(!cfg.animations) r.style.setProperty('--transition','none');
-  }catch(e){}
-})();
-</script>
-<div id="snow-breadcrumb" style="background:var(--bg2,#161920);border-bottom:1px solid var(--border,#2a2d3e);padding:7px 18px;display:flex;align-items:center;gap:8px;position:sticky;top:0;z-index:999;transition:background .25s">
-  <a href="../index.html" style="display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border-radius:8px;border:1px solid var(--border,#2a2d3e);background:var(--bg3,#1e2130);color:var(--text2,#9aa0b8);text-decoration:none;font-size:12.5px;font-family:var(--font,-apple-system,sans-serif);font-weight:500;transition:all .15s" onmouseover="this.style.borderColor='var(--accent,#5b8af0)';this.style.color='var(--accent,#5b8af0)'" onmouseout="this.style.borderColor='var(--border,#2a2d3e)';this.style.color='var(--text2,#9aa0b8)'">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:13px;height:13px"><polyline points="15 18 9 12 15 6"/></svg>
-    Snow Hub
-  </a>
-  <span style="color:var(--text3,#5c6080);font-size:12px">/</span>
-  <span style="color:var(--text3,#5c6080);font-size:12.5px">FinFlow</span>
+<div style="background:var(--bg2,#161920);border-bottom:1px solid var(--border,#2a2d3e);padding:7px 16px;display:flex;align-items:center;gap:8px;position:sticky;top:0;z-index:999;height:38px">
+  <a href="../index.html" style="display:inline-flex;align-items:center;gap:6px;padding:4px 11px;border-radius:7px;border:1px solid var(--border,#2a2d3e);background:var(--bg3,#1e2130);color:var(--text2,#9aa0b8);text-decoration:none;font-size:12px;font-weight:500;transition:all .15s" onmouseover="this.style.borderColor='var(--accent,#5b8af0)';this.style.color='var(--accent,#5b8af0)'" onmouseout="this.style.borderColor='var(--border,#2a2d3e)';this.style.color='var(--text2,#9aa0b8)'">&#8592; Snow Hub</a>
+  <span style="color:var(--text3,#5c6080);font-size:12px">/ FinFlow</span>
 </div>
 
 <div class="mobile-topbar">
@@ -1330,7 +1290,7 @@ function deleteBudget(id){db.budgets=db.budgets.filter(b=>b.id!==id);save();rend
 async function connectOneDrive(){
   const clientId=db.settings.clientId;
   if(!clientId){showToast('Configura el Client ID en Ajustes primero','err');showView('settings',document.querySelector('[onclick*=settings]'));return}
-  const redirect=window.location.origin+window.location.pathname.replace(/finflow/index.html$/,'').replace(/finflow//,'')+'callback.html';
+  const base=window.location.href.split('/finflow/')[0];const redirect=base+'/callback.html';
   const scope='Files.ReadWrite';
   const authUrl=`https://login.microsoftonline.com/common/oauth2/v2.0/authorize?client_id=${clientId}&response_type=token&redirect_uri=${encodeURIComponent(redirect)}&scope=${encodeURIComponent(scope)}&response_mode=fragment&prompt=select_account`;
   localStorage.setItem('snow_od_origin','finflow/index.html');window.location.href=authUrl;
