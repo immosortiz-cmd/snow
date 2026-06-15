@@ -787,6 +787,7 @@ let editingId=null;
 let calDate=new Date();
 let subFilter='all';
 let odToken=localStorage.getItem('snow_od_token')||null;
+let _autoSyncTimer=null;
 
 function load(){
   const s=localStorage.getItem('finflow_db');
@@ -795,9 +796,14 @@ function load(){
   renderAll();
 }
 function save(){
-  localStorage.setItem('finflow_db',JSON.stringify(db));
+  localStorage.setItem('finflow_db',JSON.stringify(db));localStorage.setItem('finflow_local_ts',Date.now().toString());
   document.getElementById('syncStatus').textContent='● local';
   document.getElementById('syncStatus').className='sync-status amber';
+  // Auto-sync to OneDrive 2 seconds after any change
+  if(odToken){
+    clearTimeout(_autoSyncTimer);
+    _autoSyncTimer=setTimeout(()=>syncOneDrive(),2000);
+  }
 }
 function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6)}
 function fmt(n,cur){
@@ -1334,7 +1340,7 @@ async function syncOneDrive(){
       headers:{'Authorization':'Bearer '+odToken,'Content-Type':'application/json'},
       body:JSON.stringify(db)
     });
-    if(res.ok){ss.textContent='● sync';ss.className='sync-status ok';showToast('Datos sincronizados en OneDrive','ok')}
+    if(res.ok){ss.textContent='● sync';ss.className='sync-status ok';localStorage.setItem('finflow_od_ts',Date.now().toString());localStorage.setItem('finflow_local_ts',Date.now().toString());showToast('Datos sincronizados en OneDrive','ok')}
     else{ss.textContent='● error';ss.className='sync-status err';showToast('Error al sincronizar: '+res.status,'err')}
   }catch(e){ss.textContent='● error';ss.className='sync-status err';showToast('Error de red','err')}
 }
@@ -1417,31 +1423,45 @@ function seedIfEmpty(){
 }
 
 // ===== INIT =====
-// Load local first as fallback, then override with OneDrive if token exists
 load();
 seedIfEmpty();
 checkOAuthCallback();
 
 async function initFromOneDrive(){
   if(!odToken){ renderAll();renderCalendar();populateTxFilter();return; }
+  // Check if local data is newer than OneDrive
+  // We track last local save timestamp to avoid overwriting fresh data
+  const localTs=parseInt(localStorage.getItem('finflow_local_ts')||'0');
+  const odTs=parseInt(localStorage.getItem('finflow_od_ts')||'0');
+  // If local is newer than last OD load, skip loading from OD (user made changes locally)
+  if(localTs>odTs && odTs>0){
+    // Local is newer — push to OD instead
+    renderAll();renderCalendar();populateTxFilter();
+    setTimeout(()=>syncOneDrive(),1000);
+    return;
+  }
   try{
     const res=await fetch('https://graph.microsoft.com/v1.0/me/drive/root:/Apps/FinFlow/data.json:/content',{
       headers:{'Authorization':'Bearer '+odToken}
     });
     if(res.ok){
       const data=await res.json();
-      db=data;
-      save();
-      applySettings();
-      showToast('Datos cargados desde OneDrive','ok');
+      // Only replace local if OD data has more or equal transactions
+      const odCount=(data.transactions||[]).length;
+      const localCount=(db.transactions||[]).length;
+      if(odCount>=localCount){
+        db=data;
+        localStorage.setItem('finflow_db',JSON.stringify(db));
+        localStorage.setItem('finflow_od_ts',Date.now().toString());
+        applySettings();
+      }
     } else if(res.status===401){
       odToken=null;
       localStorage.removeItem('snow_od_token');
       showToast('Sesión expirada — reconecta desde Snow Hub','err');
     }
-  }catch(e){
-    // network error — use local data silently
-  } finally {
+  }catch(e){}
+  finally{
     renderAll();renderCalendar();populateTxFilter();
   }
 }
