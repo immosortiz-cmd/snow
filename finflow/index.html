@@ -1325,7 +1325,7 @@ function updateOdUI(connected){
   }
 }
 async function syncOneDrive(){
-  if(!odToken){showToast('Conecta OneDrive primero','info');return}
+  if(!odToken){showToast('Conecta OneDrive primero','info');return;}
   const ss=document.getElementById('syncStatus');
   ss.textContent='● sync…';ss.className='sync-status sync';
   try{
@@ -1417,9 +1417,36 @@ function seedIfEmpty(){
 }
 
 // ===== INIT =====
-load();seedIfEmpty();checkOAuthCallback();
-renderAll();renderCalendar();
-populateTxFilter();
+// Load local first as fallback, then override with OneDrive if token exists
+load();
+seedIfEmpty();
+checkOAuthCallback();
+
+async function initFromOneDrive(){
+  if(!odToken){ renderAll();renderCalendar();populateTxFilter();return; }
+  try{
+    const res=await fetch('https://graph.microsoft.com/v1.0/me/drive/root:/Apps/FinFlow/data.json:/content',{
+      headers:{'Authorization':'Bearer '+odToken}
+    });
+    if(res.ok){
+      const data=await res.json();
+      db=data;
+      save();
+      applySettings();
+      showToast('Datos cargados desde OneDrive','ok');
+    } else if(res.status===401){
+      odToken=null;
+      localStorage.removeItem('snow_od_token');
+      showToast('Sesión expirada — reconecta desde Snow Hub','err');
+    }
+  }catch(e){
+    // network error — use local data silently
+  } finally {
+    renderAll();renderCalendar();populateTxFilter();
+  }
+}
+
+initFromOneDrive();
 
 // PWA service worker (minimal)
 if('serviceWorker' in navigator){
